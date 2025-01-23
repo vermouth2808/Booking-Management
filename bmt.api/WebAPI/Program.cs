@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Core.Repositories.Mapper;
-using Core.Services;
-using Core.Repositories.DataModel;
-using Core.Repositories;
+﻿using Core.Application.Interfaces;
+using Core.Application.Services;
+using Core.Infrastructure.Mappings;
+using Core.Infrastructure.Repositories;
+using Core.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+using Core.Shared.DTOs.Movie;
 
 internal class Program
 {
@@ -10,27 +12,23 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
-        // Cấu hình Swagger cho API
-        builder.Services.AddSwaggerGen();
-
-        // Cấu hình DbContext với chuỗi kết nối từ appsettings.json
+        // Cấu hình DbContext với SQL Server
         builder.Services.AddDbContext<BookMovieTicketContext>(options =>
-            options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-        );
+       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+   );
 
-        // Thêm các dịch vụ liên quan đến API
-        builder.Services.AddControllers();  // Đảm bảo đã thêm các controller vào container
 
-        // Thêm các dịch vụ khác nếu cần (Ví dụ: AutoMapper, các dịch vụ của ứng dụng)
-        builder.Services.AddScoped<IMovieService<Core.Repositories.Model.Movie>, MovieService<Core.Repositories.Model.Movie>>();  // Ví dụ thêm một dịch vụ
+        // Đảm bảo đã thêm các controller vào container
+        // Đảm bảo đăng ký các repository và service
+        builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
+        builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
+        builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
 
-        // Repositories
-        builder.Services.AddScoped<IMovieMapper<Core.Repositories.Model.Movie>, MovieMapper<Core.Repositories.Model.Movie>>();
-        builder.Services.AddScoped<IMovieRepository<Core.Repositories.Model.Movie>, MovieRepository<Core.Repositories.Model.Movie>>();
 
+        // Thêm các dịch vụ cần thiết cho API
+        builder.Services.AddControllers();
         // Cấu hình cho Swagger UI
+        builder.Services.AddSwaggerGen();
         builder.Services.AddEndpointsApiExplorer();
 
         var app = builder.Build();

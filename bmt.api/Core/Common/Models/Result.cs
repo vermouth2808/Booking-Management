@@ -1,4 +1,4 @@
-﻿namespace Application.Common.Models
+﻿namespace Core.Repositories.Common.Models
 {
     public class Result<T>
     {
@@ -13,7 +13,7 @@
 
         public static Result<T> Success(string message = "")
         {
-            return new Result<T> { IsSuccess = true, Message = message, Data = default(T) };  // Khi không cần data
+            return new Result<T> { IsSuccess = true, Message = message, Data = default(T) };  
         }
 
         public static Result<T> Failure(string message)
@@ -21,5 +21,4 @@
             return new Result<T> { IsSuccess = false, Message = message, Data = default(T) };
         }
     }
-
 }

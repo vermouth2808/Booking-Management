@@ -13,7 +13,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Core\Core.Repositories.csproj" />
+    <ProjectReference Include="..\Core.Domain\Core.Domain.csproj" />
+    <ProjectReference Include="..\Core.Shared\Core.Shared.csproj" />
+    <ProjectReference Include="..\Infrastructure\Core.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

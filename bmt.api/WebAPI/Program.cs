@@ -1,50 +1,105 @@
-﻿using Core.Application.Interfaces;
+﻿using Microsoft.OpenApi.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Core.Application.Interfaces;
 using Core.Application.Services;
+using Core.Domain.Entities;
 using Core.Infrastructure.Mappings;
 using Core.Infrastructure.Repositories;
-using Core.Domain.Entities;
-using Microsoft.EntityFrameworkCore;
 using Core.Shared.DTOs.Movie;
+using Microsoft.EntityFrameworkCore;
 
-internal class Program
+var builder = WebApplication.CreateBuilder(args);
+
+// Đọc cấu hình JWT từ appsettings.json
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+
+// Cấu hình DbContext với SQL Server
+builder.Services.AddDbContext<BookMovieTicketContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+);
+
+// Thêm dịch vụ xác thực JWT
+builder.Services.AddAuthentication(options =>
 {
-    private static void Main(string[] args)
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
     {
-        var builder = WebApplication.CreateBuilder(args);
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true, // Kiểm tra thời gian hết hạn
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtSettings["Issuer"],
+        ValidAudience = jwtSettings["Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"])),
+        ClockSkew = TimeSpan.Zero // Tùy chọn: Đảm bảo không có độ trễ khi xác thực token
+    };
 
-        // Cấu hình DbContext với SQL Server
-        builder.Services.AddDbContext<BookMovieTicketContext>(options =>
-       options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-   );
-
-
-        // Đảm bảo đã thêm các controller vào container
-        // Đảm bảo đăng ký các repository và service
-        builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
-        builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
-        builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
-
-
-        // Thêm các dịch vụ cần thiết cho API
-        builder.Services.AddControllers();
-        // Cấu hình cho Swagger UI
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddEndpointsApiExplorer();
-
-        var app = builder.Build();
-
-        // Configure the HTTP request pipeline.
-        if (app.Environment.IsDevelopment())
+    // Optionally, you can add an event handler to catch the failed validation
+    options.Events = new JwtBearerEvents
+    {
+        OnAuthenticationFailed = context =>
         {
-            app.UseSwagger();           // Đảm bảo Swagger được sử dụng
-            app.UseSwaggerUI();         // Đảm bảo Swagger UI hiển thị
+            Console.WriteLine("Authentication failed: " + context.Exception.Message);
+            return Task.CompletedTask;
         }
+    };
 
-        app.UseHttpsRedirection();
+});
 
-        // Thêm đoạn này để ánh xạ các route của API controller
-        app.MapControllers();  // Ánh xạ các controller API vào ứng dụng
 
-        app.Run();
-    }
+// Thêm dịch vụ authorization
+builder.Services.AddAuthorization();
+
+// Đăng ký các repository và service
+builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
+builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
+builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
+
+// Thêm các dịch vụ cần thiết cho API
+builder.Services.AddControllers();
+
+// Cấu hình Swagger
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        BearerFormat = "JWT",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Enter your JWT Access Token",
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+    options.AddSecurityDefinition("Bearer", jwtSecurityScheme);
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {jwtSecurityScheme,Array.Empty<string>() }
+    });
+});
+
+var app = builder.Build();
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+// Cấu hình pipeline xử lý HTTP request
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+app.Run();

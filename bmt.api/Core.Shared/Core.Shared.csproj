@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="Constants\" />
-    <Folder Include="DTOs\Auth\" />
     <Folder Include="Extensions\" />
     <Folder Include="Validation\" />
     <Folder Include="Utilities\" />

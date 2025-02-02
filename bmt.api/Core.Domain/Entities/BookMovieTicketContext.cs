@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Core.Domain.Entities;
 
@@ -21,11 +19,15 @@ public partial class BookMovieTicketContext : DbContext
 
     public virtual DbSet<Customer> Customers { get; set; }
 
+    public virtual DbSet<Department> Departments { get; set; }
+
     public virtual DbSet<Movie> Movies { get; set; }
 
     public virtual DbSet<Position> Positions { get; set; }
 
     public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
 
     public virtual DbSet<Seat> Seats { get; set; }
 
@@ -34,11 +36,6 @@ public partial class BookMovieTicketContext : DbContext
     public virtual DbSet<Staff> Staff { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-NAQBUOF;Database=Book_Movie_Ticket;User Id=sa;Password=123456;TrustServerCertificate=True;");
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
@@ -95,6 +92,19 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });
 
+        modelBuilder.Entity<Department>(entity =>
+        {
+            entity.ToTable("Department");
+
+            entity.Property(e => e.DepartmentId).HasColumnName("DepartmentID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.DepartmentName).HasMaxLength(512);
+            entity.Property(e => e.Description).HasMaxLength(4000);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
         modelBuilder.Entity<Movie>(entity =>
         {
             entity.ToTable("Movie");
@@ -141,7 +151,19 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.IsUsed).HasDefaultValue(false);
             entity.Property(e => e.JwtId).HasMaxLength(256);
             entity.Property(e => e.Token).HasMaxLength(256);
-            entity.Property(e => e.UserId).HasMaxLength(256);
+        });
+
+        modelBuilder.Entity<Role>(entity =>
+        {
+            entity.ToTable("Role");
+
+            entity.Property(e => e.RoleId).HasColumnName("RoleID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.Description).HasMaxLength(512);
+            entity.Property(e => e.RoleName).HasMaxLength(50);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });
 
         modelBuilder.Entity<Seat>(entity =>
@@ -206,6 +228,7 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.FullName).HasMaxLength(512);
             entity.Property(e => e.PassWord).HasMaxLength(1000);
+            entity.Property(e => e.RoleId).HasColumnName("RoleID");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
             entity.Property(e => e.UserName).HasMaxLength(512);

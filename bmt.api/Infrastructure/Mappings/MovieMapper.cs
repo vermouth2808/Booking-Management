@@ -7,7 +7,7 @@ namespace Core.Infrastructure.Mappings
     {
         T ToModel(Movie dataModel);
         Movie ToDataModel(T model);
-        MovieRes ToModel<T>(T data) where T : MovieRes, new(); // Sửa phương thức này
+        MovieRes ToModel<T>(T data) where T : MovieRes, new(); 
     }
 
     public class MovieMapper<T> : IMovieMapper<T> where T : MovieRes, new()
@@ -53,8 +53,6 @@ namespace Core.Infrastructure.Mappings
             return result;
         }
 
-
-        // Triển khai phương thức còn thiếu
         public MovieRes ToModel<T>(T data) where T : MovieRes, new()
         {
             return new MovieRes

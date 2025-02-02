@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Core.Domain.Entities;
+﻿namespace Core.Domain.Entities;
 
 public partial class User
 {
@@ -12,6 +9,8 @@ public partial class User
     public string? FullName { get; set; }
 
     public string PassWord { get; set; } = null!;
+
+    public int RoleId { get; set; }
 
     public bool IsOnline { get; set; }
 

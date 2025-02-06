@@ -1,23 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Domain.Entities;
+namespace Core.API.Entities;
 
-public partial class Staff
+public partial class Customer
 {
-    public int StaffId { get; set; }
+    public int CustomerId { get; set; }
 
-    public string StaffCode { get; set; } = null!;
-
-    public string StaffName { get; set; } = null!;
+    public string CustomerName { get; set; } = null!;
 
     public string? Phone { get; set; }
 
     public string? Email { get; set; }
 
-    public int PositionId { get; set; }
-
-    public int StaffStatusId { get; set; }
+    public string? Address { get; set; }
 
     public string? Description { get; set; }
 

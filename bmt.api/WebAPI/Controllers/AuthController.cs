@@ -1,4 +1,5 @@
-﻿using Core.Domain.Entities;
+﻿using Core.Application.Interfaces;
+using Core.Domain.Entities;
 using Core.Shared.DTOs.Auth.Request;
 using Core.Shared.DTOs.Auth.Response;
 using Microsoft.AspNetCore.Mvc;
@@ -17,31 +18,32 @@ namespace Core.API.Controllers
     {
         private readonly IConfiguration _config;
         private readonly BookMovieTicketContext _context;
+        private readonly IAuthService _authService;
 
-        public AuthController(IConfiguration config, BookMovieTicketContext context)
+        public AuthController(IConfiguration config, BookMovieTicketContext context, IAuthService auth)
         {
             _config = config;
             _context = context;
+            _authService = auth;
         }
-
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterReq req)
+        /// <summary>
+        /// Register account client
+        /// </summary>
+        /// <param name="req"></param>
+        /// <returns></returns>
+        [HttpPost("registerClient")]
+        public async Task<IActionResult> RegisterClient(UserRegisterReq req)
         {
-            var user = new User
+            var result = await _authService.RegisterClient(req);
+
+            if (!result.IsSuccess)
             {
-                UserName = req.UserName,
-                FullName = req.FullName,
-                PassWord = HashPassword(req.PassWord),
-                IsActive = true,
-                CreatedDate = DateTime.Now,
-                CreatedUserId = 1 
-            };
+                return BadRequest(result.Message);
+            }
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { Message = "User registered successfully" });
+            return Ok(result);
         }
+
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginReq req)

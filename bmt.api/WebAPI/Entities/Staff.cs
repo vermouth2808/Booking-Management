@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.Domain.Entities;
+namespace Core.API.Entities;
 
 public partial class Staff
 {

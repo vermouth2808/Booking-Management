@@ -1,9 +1,8 @@
 ﻿using Core.Application.Interfaces;
 using Core.Shared.Common.Models;
 using Core.Shared.DTOs.Movie;
-using Core.Domain.Entities;
-using Core.Infrastructure.Repositories;
 using Core.Infrastructure.Mappings;
+using Core.Infrastructure.Repositories.Interfaces;
 
 namespace Core.Application.Services
 {

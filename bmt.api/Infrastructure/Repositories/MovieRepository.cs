@@ -1,16 +1,12 @@
 ﻿using Core.Domain.Entities;
 using Core.Infrastructure.Mappings;
+using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
 using Core.Shared.DTOs.Movie;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repositories
 {
-    public interface IMovieRepository<T> where T : MovieRes, new()
-    {
-        Task<Result<T>> GetMovieById(int id);
-    }
-
     public class MovieRepository<T> : IMovieRepository<T> where T : MovieRes, new() 
     {
         private readonly BookMovieTicketContext _context;

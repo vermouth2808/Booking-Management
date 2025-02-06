@@ -1,13 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
-namespace Core.Domain.Entities;
+namespace Core.API.Entities;
 
 public partial class BookMovieTicketContext : DbContext
 {
-    public BookMovieTicketContext()
-    {
-    }
-
     public BookMovieTicketContext(DbContextOptions<BookMovieTicketContext> options)
         : base(options)
     {
@@ -36,6 +34,7 @@ public partial class BookMovieTicketContext : DbContext
     public virtual DbSet<Staff> Staff { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Booking>(entity =>
@@ -78,6 +77,7 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
             entity.Property(e => e.Address).HasMaxLength(512);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.CustomerName).HasMaxLength(512);
             entity.Property(e => e.Description).HasMaxLength(4000);
             entity.Property(e => e.Email).HasMaxLength(512);
@@ -85,6 +85,7 @@ public partial class BookMovieTicketContext : DbContext
                 .HasMaxLength(15)
                 .IsUnicode(false);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });
 
         modelBuilder.Entity<Department>(entity =>

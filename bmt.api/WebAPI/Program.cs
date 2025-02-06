@@ -9,6 +9,7 @@ using Core.Infrastructure.Mappings;
 using Core.Infrastructure.Repositories;
 using Core.Shared.DTOs.Movie;
 using Microsoft.EntityFrameworkCore;
+using Core.Infrastructure.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -61,6 +62,12 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
 builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
 builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
+
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IAuthRepository, AuthRepository>();
+builder.Services.AddScoped<IUserValidator, UserValidator>();
+
+
 
 // Thêm các dịch vụ cần thiết cho API
 builder.Services.AddControllers();

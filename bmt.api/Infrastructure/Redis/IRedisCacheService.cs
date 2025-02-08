@@ -2,7 +2,9 @@
 {
     public interface IRedisCacheService
     {
-        T? GetData<T>(string key); 
-        void SetData<T> (string key, T value);
+        Task<T?> GetDataAsync<T>(string key);
+        Task SetDataAsync<T>(string key, T value, TimeSpan? expirationTime = null);
+        Task RemoveDataAsync(string key);
+        Task RemoveByPatternAsync(string pattern);
     }
 }

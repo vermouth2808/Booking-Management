@@ -27,6 +27,12 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
     options.InstanceName = "bmt_";
 });
+builder.Services.AddSingleton<IConnectionMultiplexer>(sp =>
+{
+    var redisConnection = builder.Configuration.GetConnectionString("Redis");
+    return ConnectionMultiplexer.Connect(redisConnection);
+});
+
 // Thêm dịch vụ xác thực JWT
 builder.Services.AddAuthentication(options =>
 {
@@ -73,7 +79,7 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
 
-builder.Services.AddScoped<IRedisCacheService, RedisCacheSevice>();
+builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 
 

@@ -1,8 +1,8 @@
 ﻿using Core.Application.Interfaces;
 using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Movie;
 using Core.Infrastructure.Mappings;
 using Core.Infrastructure.Repositories.Interfaces;
+using Core.Shared.DTOs.Response.Movie;
 
 namespace Core.Application.Services
 {

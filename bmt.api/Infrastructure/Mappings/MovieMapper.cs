@@ -1,5 +1,5 @@
 ﻿using Core.Domain.Entities;
-using Core.Shared.DTOs.Movie;
+using Core.Shared.DTOs.Response.Movie;
 
 namespace Core.Infrastructure.Mappings
 {

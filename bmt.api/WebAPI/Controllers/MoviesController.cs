@@ -1,5 +1,5 @@
 ﻿using Core.Application.Interfaces;
-using Core.Shared.DTOs.Movie;
+using Core.Shared.DTOs.Response.Movie;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

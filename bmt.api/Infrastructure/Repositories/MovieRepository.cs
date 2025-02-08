@@ -2,7 +2,7 @@
 using Core.Infrastructure.Mappings;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Movie;
+using Core.Shared.DTOs.Response.Movie;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Infrastructure.Repositories

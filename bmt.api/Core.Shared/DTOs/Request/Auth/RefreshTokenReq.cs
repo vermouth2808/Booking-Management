@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.DTOs.Auth.Request
+﻿namespace Core.Shared.DTOs.Request.Auth
 {
     public partial class RefreshTokenReq
     {

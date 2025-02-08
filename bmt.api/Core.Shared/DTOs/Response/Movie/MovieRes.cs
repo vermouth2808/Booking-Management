@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.DTOs.Movie
+﻿namespace Core.Shared.DTOs.Response.Movie
 {
     public class MovieRes
     {

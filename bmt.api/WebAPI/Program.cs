@@ -7,9 +7,9 @@ using Core.Application.Services;
 using Core.Domain.Entities;
 using Core.Infrastructure.Mappings;
 using Core.Infrastructure.Repositories;
-using Core.Shared.DTOs.Movie;
 using Microsoft.EntityFrameworkCore;
 using Core.Infrastructure.Repositories.Interfaces;
+using Core.Shared.DTOs.Response.Movie;
 
 var builder = WebApplication.CreateBuilder(args);
 

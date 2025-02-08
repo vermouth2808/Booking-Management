@@ -1,7 +1,7 @@
 ﻿using Core.Application.Interfaces;
 using Core.Domain.Entities;
 using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Auth.Request;
+using Core.Shared.DTOs.Request.Auth;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Application.Services

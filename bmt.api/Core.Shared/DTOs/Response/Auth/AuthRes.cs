@@ -1,4 +1,4 @@
-﻿namespace Core.Shared.DTOs.Auth.Response
+﻿namespace Core.Shared.DTOs.Response.Auth
 {
     public class AuthRes
     {

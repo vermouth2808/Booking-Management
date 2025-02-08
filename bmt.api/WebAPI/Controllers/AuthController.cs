@@ -1,7 +1,7 @@
 ﻿using Core.Application.Interfaces;
 using Core.Domain.Entities;
-using Core.Shared.DTOs.Auth.Request;
-using Core.Shared.DTOs.Auth.Response;
+using Core.Shared.DTOs.Request.Auth;
+using Core.Shared.DTOs.Response.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

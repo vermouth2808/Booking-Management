@@ -1,12 +1,5 @@
-﻿using Core.Domain.Entities;
-using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Auth.Request;
-using Core.Shared.DTOs.Auth.Response;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Core.Shared.Common.Models;
+using Core.Shared.DTOs.Request.Auth;
 
 namespace Core.Application.Interfaces
 {

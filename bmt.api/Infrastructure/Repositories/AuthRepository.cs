@@ -1,7 +1,7 @@
 ﻿using Core.Domain.Entities;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Auth.Request;
+using Core.Shared.DTOs.Request.Auth;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Cryptography;
 using System.Text;

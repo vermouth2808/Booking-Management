@@ -1,7 +1,7 @@
 ﻿using Core.Application.Interfaces;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Auth.Request;
+using Core.Shared.DTOs.Request.Auth;
 
 namespace Core.Application.Services
 {

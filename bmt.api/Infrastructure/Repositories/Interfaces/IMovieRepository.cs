@@ -1,5 +1,5 @@
 ﻿using Core.Shared.Common.Models;
-using Core.Shared.DTOs.Movie;
+using Core.Shared.DTOs.Response.Movie;
 
 namespace Core.Infrastructure.Repositories.Interfaces
 {

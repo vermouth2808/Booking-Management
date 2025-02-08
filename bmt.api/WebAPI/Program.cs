@@ -10,6 +10,8 @@ using Core.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.DTOs.Response.Movie;
+using StackExchange.Redis;
+using Core.Infrastructure.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,7 +22,11 @@ var jwtSettings = builder.Configuration.GetSection("Jwt");
 builder.Services.AddDbContext<BookMovieTicketContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
-
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+    options.InstanceName = "bmt_";
+});
 // Thêm dịch vụ xác thực JWT
 builder.Services.AddAuthentication(options =>
 {
@@ -34,12 +40,12 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidateLifetime = true, // Kiểm tra thời gian hết hạn
+        ValidateLifetime = true, 
         ValidateIssuerSigningKey = true,
         ValidIssuer = jwtSettings["Issuer"],
         ValidAudience = jwtSettings["Audience"],
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"])),
-        ClockSkew = TimeSpan.Zero // Tùy chọn: Đảm bảo không có độ trễ khi xác thực token
+        ClockSkew = TimeSpan.Zero 
     };
 
     // Optionally, you can add an event handler to catch the failed validation
@@ -66,6 +72,8 @@ builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
 builder.Services.AddScoped<IUserValidator, UserValidator>();
+
+builder.Services.AddScoped<IRedisCacheService, RedisCacheSevice>();
 
 
 

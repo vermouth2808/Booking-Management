@@ -28,6 +28,9 @@ namespace Core.Infrastructure.Repositories
             var movie = new Movie()
             {
                 Title = req.Title,
+                Director = req.Director,
+                Performer = req.Performer,
+                Language = req.Language,
                 Genre = req.Genre,
                 Duration = req.Duration,
                 ReleaseDate = req.ReleaseDate,
@@ -46,18 +49,41 @@ namespace Core.Infrastructure.Repositories
             return Result<bool>.Success(true);
         }
 
+        public async Task<Result<bool>> DeleteMovie(int id, int updatedUserId)
+        {
+            string cacheKey = $"movie_{id}";
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id && m.IsDeleted == false);
+            if (movie == null)
+            {
+                return Result<bool>.Failure("Movie not found");
+            }
+
+            movie.IsDeleted = true;
+            movie.UpdatedDate = DateTime.UtcNow;
+            movie.UpdatedUserId = updatedUserId;
+
+            _context.Movies.Update(movie);
+            await _context.SaveChangesAsync();
+
+            await _redisCacheService.RemoveByPatternAsync("movies_");
+            await _redisCacheService.RemoveDataAsync(cacheKey);
+
+            return Result<bool>.Success(true);
+        }
+
+
         public async Task<Result<T>> GetMovieById(int id)
         {
             string cacheKey = $"movie_{id}";
 
-            var cachedMovie =await _redisCacheService.GetDataAsync<Movie>(cacheKey);
+            var cachedMovie = await _redisCacheService.GetDataAsync<Movie>(cacheKey);
             if (cachedMovie != null)
             {
                 var mappedMovie = _mapper.ToModel(cachedMovie);
                 return Result<T>.Success(mappedMovie, "Successfully");
             }
 
-            var efItem = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id);
+            var efItem = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == id && m.IsDeleted == false);
             if (efItem == null)
             {
                 return Result<T>.Failure("Movie not found");
@@ -75,13 +101,13 @@ namespace Core.Infrastructure.Repositories
             processedKeySearch = Regex.Replace(processedKeySearch, @"\s+", " ");
             string cacheKey = $"movies_{req.KeySearch}_{req.PageIndex}_{req.PageSize}";
 
-            var cachedMovies =await _redisCacheService.GetDataAsync<MovieSearchRes>(cacheKey);
+            var cachedMovies = await _redisCacheService.GetDataAsync<MovieSearchRes>(cacheKey);
             if (cachedMovies != null)
             {
                 return Result<MovieSearchRes>.Success(cachedMovies, "Successfully retrieved from cache");
             }
 
-            var query = _context.Movies.AsQueryable();
+            var query = _context.Movies.AsQueryable().Where(m => m.IsDeleted == false);
 
             if (!string.IsNullOrEmpty(req.KeySearch))
             {
@@ -91,7 +117,7 @@ namespace Core.Infrastructure.Repositories
             // Lấy tổng số lượng kết quả để hỗ trợ phân trang (nếu cần)
             int totalRecords = await query.CountAsync();
 
-            var movies = await query
+            var movies = await query.Where(m => m.IsDeleted == false)
                 .OrderBy(m => m.CreatedDate)
                 .Skip((req.PageIndex - 1) * req.PageSize)
                 .Take(req.PageSize)
@@ -114,5 +140,30 @@ namespace Core.Infrastructure.Repositories
             return Result<MovieSearchRes>.Success(searchResult, "Successfully retrieved from database");
         }
 
+        public async Task<Result<bool>> UpdateMovie(UpdateMovieReq req, int updatedUserId)
+        {
+            var movie = await _context.Movies.FirstOrDefaultAsync(m => m.MovieId == req.MovieId && m.IsDeleted == false);
+            if (movie == null)
+            {
+                return Result<bool>.Failure("Movie not found");
+            }
+            string cacheKey = $"movie_{req.MovieId}";
+            movie.Title = req.Title ?? movie.Title;
+            movie.Director = req.Director ?? movie.Director;
+            movie.Performer = req.Performer ?? movie.Performer;
+            movie.Language = req.Language ?? movie.Language;
+            movie.Genre = req.Genre ?? movie.Genre;
+            movie.Duration = req.Duration ?? movie.Duration;
+            movie.ReleaseDate = req.ReleaseDate ?? movie.ReleaseDate;
+            movie.PosterUrl = req.PosterUrl ?? movie.PosterUrl;
+            movie.TrailerUrl = req.TrailerUrl ?? movie.TrailerUrl;
+            movie.Description = req.Description ?? movie.Description;
+            _context.Movies.Update(movie);
+            await _context.SaveChangesAsync();
+
+            await _redisCacheService.RemoveByPatternAsync("movies_");
+            await _redisCacheService.RemoveDataAsync(cacheKey);
+            return Result<bool>.Success(true);
+        }
     }
 }

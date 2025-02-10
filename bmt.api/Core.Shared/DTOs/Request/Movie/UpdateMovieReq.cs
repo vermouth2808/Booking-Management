@@ -1,9 +1,10 @@
 ﻿namespace Core.Shared.DTOs.Request.Movie
 {
-    public class CreateMovieReq
+    public class UpdateMovieReq
     {
 
-        public string Title { get; set; } = null!;
+        public int MovieId { get; set; }
+        public string? Title { get; set; }
         public string? Director { get; set; }
         public string? Performer { get; set; }
         public string? Language { get; set; }

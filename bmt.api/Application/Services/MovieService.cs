@@ -62,5 +62,35 @@ namespace Core.Application.Services
 
             return Result<bool>.Success(true);
         }
+        /// <summary>
+        /// update a movie
+        /// </summary>
+        /// <param name="req"></param>
+        /// <param name="CreatedUserId"></param>
+        /// <returns></returns>
+        public async Task<Result<bool>> UpdateMovie(UpdateMovieReq req, int CreatedUserId)
+        {
+            var result = await _movieRepository.UpdateMovie(req, CreatedUserId);
+            if (!result.IsSuccess)
+            {
+                return Result<bool>.Failure("Update a failed movie");
+            }
+            return Result<bool>.Success(true);
+        }
+        /// <summary>
+        /// remove a movie
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="CreatedUserId"></param>
+        /// <returns></returns>
+        public async Task<Result<bool>> DeleteMovie(int id, int CreatedUserId)
+        {
+            var result = await _movieRepository.DeleteMovie(id, CreatedUserId);
+            if (!result.IsSuccess)
+            {
+                return Result<bool>.Failure("Update a failed movie");
+            }
+            return Result<bool>.Success(true);
+        }
     }
 }

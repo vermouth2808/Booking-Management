@@ -12,6 +12,7 @@ using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.DTOs.Response.Movie;
 using StackExchange.Redis;
 using Core.Infrastructure.Redis;
+using Core.Shared.DTOs.Response.ShowTime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -54,7 +55,6 @@ builder.Services.AddAuthentication(options =>
         ClockSkew = TimeSpan.Zero 
     };
 
-    // Optionally, you can add an event handler to catch the failed validation
     options.Events = new JwtBearerEvents
     {
         OnAuthenticationFailed = context =>
@@ -67,26 +67,29 @@ builder.Services.AddAuthentication(options =>
 });
 
 
-// Thêm dịch vụ authorization
 builder.Services.AddAuthorization();
 
-// Đăng ký các repository và service
 builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
 builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
 builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
 
+builder.Services.AddScoped<IShowtimeMapper<ShowTimeRes>, ShowtimeMapper<ShowTimeRes>>();
+builder.Services.AddScoped<IShowTimeService<ShowTimeRes>, ShowTimeService<ShowTimeRes>>();
+builder.Services.AddScoped<IShowTimeRepository<ShowTimeRes>, ShowTimeRepository<ShowTimeRes>>();
+
+builder.Services.AddScoped<IUserValidator, UserValidator>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IAuthRepository, AuthRepository>();
-builder.Services.AddScoped<IUserValidator, UserValidator>();
+
 
 builder.Services.AddScoped<IRedisCacheService, RedisCacheService>();
 
 
 
-// Thêm các dịch vụ cần thiết cho API
+
+
 builder.Services.AddControllers();
 
-// Cấu hình Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -117,7 +120,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-// Cấu hình pipeline xử lý HTTP request
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

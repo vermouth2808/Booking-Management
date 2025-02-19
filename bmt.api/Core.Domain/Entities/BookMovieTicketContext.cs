@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Domain.Entities;
 
@@ -12,6 +14,8 @@ public partial class BookMovieTicketContext : DbContext
         : base(options)
     {
     }
+
+    public virtual DbSet<Banner> Banners { get; set; }
 
     public virtual DbSet<Booking> Bookings { get; set; }
 
@@ -38,6 +42,19 @@ public partial class BookMovieTicketContext : DbContext
     public virtual DbSet<User> Users { get; set; }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Banner>(entity =>
+        {
+            entity.ToTable("Banner");
+
+            entity.Property(e => e.BannerId).HasColumnName("BannerID");
+            entity.Property(e => e.BannerName).HasMaxLength(512);
+            entity.Property(e => e.BannerUrl).HasMaxLength(512);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
         modelBuilder.Entity<Booking>(entity =>
         {
             entity.ToTable("Booking");
@@ -108,10 +125,13 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.Description).HasMaxLength(512);
+            entity.Property(e => e.Director).HasMaxLength(512);
             entity.Property(e => e.Duration).HasComment("thời lượng phim");
             entity.Property(e => e.Genre)
                 .HasMaxLength(512)
                 .HasComment("thể loại");
+            entity.Property(e => e.Language).HasMaxLength(512);
+            entity.Property(e => e.Performer).HasMaxLength(512);
             entity.Property(e => e.PosterUrl).HasMaxLength(512);
             entity.Property(e => e.ReleaseDate).HasComment("ngày phát hành phim");
             entity.Property(e => e.Title).HasMaxLength(512);

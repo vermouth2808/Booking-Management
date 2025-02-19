@@ -1,17 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Core.API.Entities;
+namespace Core.Domain.Entities;
 
-public partial class Department
+public partial class Banner
 {
-    public int DepartmentId { get; set; }
+    public int BannerId { get; set; }
 
-    public string DepartmentName { get; set; } = null!;
+    public string BannerName { get; set; } = null!;
 
-    public string? Description { get; set; }
-
-    public bool IsActived { get; set; }
+    public string BannerUrl { get; set; } = null!;
 
     public DateTime CreatedDate { get; set; }
 

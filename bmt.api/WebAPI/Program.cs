@@ -13,6 +13,7 @@ using Core.Shared.DTOs.Response.Movie;
 using StackExchange.Redis;
 using Core.Infrastructure.Redis;
 using Core.Shared.DTOs.Response.ShowTime;
+using Core.Shared.DTOs.Response.Banner;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -65,13 +66,25 @@ builder.Services.AddAuthentication(options =>
     };
 
 });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy =>
+        {
+            policy.AllowAnyOrigin()
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
+});
 
 
-builder.Services.AddAuthorization();
 
 builder.Services.AddScoped<IMovieMapper<MovieRes>, MovieMapper<MovieRes>>();
 builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
 builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
+
+builder.Services.AddScoped<IBannerMapper<BannerRes>, BannerMapper<BannerRes>>();
+builder.Services.AddScoped<IBannerRepository<BannerRes>, BannerRepository<BannerRes>>();
 
 builder.Services.AddScoped<IShowtimeMapper<ShowTimeRes>, ShowtimeMapper<ShowTimeRes>>();
 builder.Services.AddScoped<IShowTimeService<ShowTimeRes>, ShowTimeService<ShowTimeRes>>();
@@ -115,7 +128,9 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 var app = builder.Build();
+app.UseCors("AllowAll");
 
+builder.Services.AddAuthorization();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

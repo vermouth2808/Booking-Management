@@ -1,20 +1,16 @@
-import logo from './logo.svg';
-import './App.css';
-import {Button,Checkbox,Form} from 'antd';
-import React from 'react';
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginPage from "./pages/LoginPage";
+import HomePage from "./pages/HomePage";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
-  const name ="tuan anh"
   return (
-    <div className="App">
-      <Button>Submit</Button>
-      
-    <h1>{name}</h1>
-    <mycomponent></mycomponent>
-    
-    </div>
-    
+    <Router>
+      <Routes>
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+      </Routes>
+    </Router>
   );
 }
 

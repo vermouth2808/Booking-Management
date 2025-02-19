@@ -11,3 +11,24 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.login-form {
+  margin: 120px auto;
+  max-width: 300px;
+}
+
+.login-form-forgot {
+  float: right;
+}
+
+.login-form-button {
+  width: 100%;
+}
+
+.icon-margin{
+  margin: 8px;
+}
+
+.login-form-forgot-bottom{
+  margin-bottom: 0px;
+}

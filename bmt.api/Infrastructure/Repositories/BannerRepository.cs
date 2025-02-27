@@ -1,5 +1,5 @@
-﻿using Core.Domain.Entities;
-using Core.Infrastructure.Mappings;
+﻿using AutoMapper;
+using Core.Domain.Entities;
 using Core.Infrastructure.Redis;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
@@ -12,10 +12,10 @@ namespace Core.Infrastructure.Repositories
     public class BannerRepository<T> : IBannerRepository<T> where T : BannerRes, new()
     {
         private readonly BookMovieTicketContext _context;
-        private readonly IBannerMapper<T> _mapper;
+        private readonly IMapper _mapper;
         private readonly IRedisCacheService _redisCacheService;
 
-        public BannerRepository(BookMovieTicketContext context, IBannerMapper<T> mapper, IRedisCacheService redisCacheService)
+        public BannerRepository(BookMovieTicketContext context, IMapper mapper, IRedisCacheService redisCacheService)
         {
             _context = context;
             _mapper = mapper;
@@ -70,7 +70,7 @@ namespace Core.Infrastructure.Repositories
             var cachedBanner = await _redisCacheService.GetDataAsync<Banner>(cacheKey);
             if (cachedBanner != null)
             {
-                var mappedBanner = _mapper.ToModel(cachedBanner);
+                var mappedBanner = _mapper.Map<T>(cachedBanner);
                 return Result<T>.Success(mappedBanner, "Successfully");
             }
 
@@ -82,7 +82,7 @@ namespace Core.Infrastructure.Repositories
 
             _redisCacheService.SetDataAsync(cacheKey, efItem, null);
 
-            var mappedResult = _mapper.ToModel(efItem);
+            var mappedResult = _mapper.Map<T>(efItem);
             return Result<T>.Success(mappedResult, "Successfully");
         }
 
@@ -105,7 +105,7 @@ namespace Core.Infrastructure.Repositories
             }
 
             // Mapping dữ liệu trước khi lưu cache & trả về
-            var mappedBanners = Banners.Select(_mapper.ToModel);
+            var mappedBanners = Banners.Select(_mapper.Map<T>);
             var Result = new ReadAllBannerRes
             {
                 TotalRecords = totalRecords,

@@ -1,5 +1,5 @@
-﻿using Core.Domain.Entities;
-using Core.Infrastructure.Mappings;
+﻿using AutoMapper;
+using Core.Domain.Entities;
 using Core.Infrastructure.Redis;
 using Core.Infrastructure.Repositories.Interfaces;
 using Core.Shared.Common.Models;
@@ -13,10 +13,10 @@ namespace Core.Infrastructure.Repositories
     public class MovieRepository<T> : IMovieRepository<T> where T : MovieRes, new()
     {
         private readonly BookMovieTicketContext _context;
-        private readonly IMovieMapper<T> _mapper;
+        private readonly IMapper _mapper;
         private readonly IRedisCacheService _redisCacheService;
 
-        public MovieRepository(BookMovieTicketContext context, IMovieMapper<T> mapper, IRedisCacheService redisCacheService)
+        public MovieRepository(BookMovieTicketContext context, IMapper mapper, IRedisCacheService redisCacheService)
         {
             _context = context;
             _mapper = mapper;
@@ -79,7 +79,7 @@ namespace Core.Infrastructure.Repositories
             var cachedMovie = await _redisCacheService.GetDataAsync<Movie>(cacheKey);
             if (cachedMovie != null)
             {
-                var mappedMovie = _mapper.ToModel(cachedMovie);
+                var mappedMovie = _mapper.Map<T>(cachedMovie);
                 return Result<T>.Success(mappedMovie, "Successfully");
             }
 
@@ -91,7 +91,7 @@ namespace Core.Infrastructure.Repositories
 
             _redisCacheService.SetDataAsync(cacheKey, efItem, null);
 
-            var mappedResult = _mapper.ToModel(efItem);
+            var mappedResult = _mapper.Map<T>(efItem);
             return Result<T>.Success(mappedResult, "Successfully");
         }
 
@@ -129,7 +129,7 @@ namespace Core.Infrastructure.Repositories
             }
 
             // Mapping dữ liệu trước khi lưu cache & trả về
-            var mappedMovies = movies.Select(_mapper.ToModel);
+            var mappedMovies = movies.Select(_mapper.Map<T>);
             var searchResult = new MovieSearchRes
             {
                 TotalRecords = totalRecords,

@@ -32,32 +32,29 @@ const LoginPage = () => {
         try {
             console.log("Username:", values.username);
             console.log("Password:", values.password);
-    
+
             const { data } = await api.post(API_ENDPOINTS.LOGIN, values);
             console.log("Response:", data);
-    
+
             console.log("Access Token:", data.token);
             console.log("Refresh Token:", data.refreshToken);
-    
+
             AuthService.setAccessToken(data.token);
             AuthService.setRefreshToken(data.refreshToken);
-    
+
             navigate("/home");
         } catch (error) {
             console.error("Fail login:", error.response ? error.response.data : error.message);
         }
     };
-    
+
 
 
 
     return (
-        <Layout
+        <Layout className="login-background"
             style={{
-                backgroundImage: `url("${bgImage?.bannerUrl || ""}")`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                minHeight: "100vh",
+                backgroundImage: `url("${bgImage?.bannerUrl || ""}")`
             }}
         >
             <Form onFinish={handleLogin}
@@ -70,65 +67,72 @@ const LoginPage = () => {
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Username!',
+                            message: 'Vui lòng nhập tên đăng nhập!',
                         },
                     ]}
                 >
-                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
+                    <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Tên đăng nhập" />
                 </Form.Item>
                 <Form.Item
                     name="password"
                     rules={[
                         {
                             required: true,
-                            message: 'Please input your Password!',
+                            message: 'Vui lòng nhập mật khẩu!',
                         },
                     ]}
                 >
                     <Input
                         prefix={<LockOutlined className="site-form-item-icon" />}
                         type="password"
-                        placeholder="Password"
+                        placeholder="Mật khẩu"
                     />
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox>Remember me</Checkbox>
+                        <Checkbox><span className="cl_w" >Ghi nhớ đăng nhập</span></Checkbox>
                     </Form.Item>
 
                     <a className="login-form-forgot login-form-forgot-bottom" href="">
-                        Forgot password
+                        Quên mật khẩu?
                     </a>
                 </Form.Item>
-                <Row justify={"end"}>
-                    <Button
-                        type="primary"
-                        size="middle"
-                        shape="circle"
-                        icon={<FacebookOutlined />}
-                        className="icon-margin"
-                    />
-                    <Button
-                        type="primary"
-                        size="middle"
-                        shape="circle"
-                        className="icon-margin"
-                        danger icon={<GoogleOutlined />}
-                    />
-                </Row>
+
                 <Form.Item>
                     <Button
-                        type="primary"
+                        type="default"
                         htmlType="submit"
-                        className="login-form-button"
+                        className="login-form-button icon-margin"
+                        block
                     >
-                        Log in
+                        Đăng nhập
                     </Button>
 
-                    Or <a href="">register now!</a>
+                    <br />
+
+                    <Button
+                        type="primary"
+                        size="middle"
+                        icon={<FacebookOutlined />}
+                        className="icon-margin"
+                        block
+                    >
+                        Đăng nhập bằng Facebook
+                    </Button>
+                    <Button
+                        type="primary"
+                        size="middle"
+                        className="icon-margin"
+                        block
+                        danger icon={<GoogleOutlined />}
+                    >
+                        Đăng nhập bằng Google
+                    </Button>
+                    <span className="cl_w">Hoặc</span> <a href="">đăng ký ngay!</a>
                 </Form.Item>
             </Form>
         </Layout>
+
 
 
     );

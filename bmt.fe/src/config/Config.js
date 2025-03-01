@@ -3,7 +3,9 @@ const API_ENDPOINTS = {
     LOGIN: `${API_BASE_URL}/Auth/login`,
     REGISTER: `${API_BASE_URL}/Auth/registerClient`,
     REFRESH_TOKEN: `${API_BASE_URL}/Auth/refresh-token`,
-    IMAGE_URL: `${API_BASE_URL}/Banners/GetById/`
+    IMAGE_URL: `${API_BASE_URL}/Banners/GetById/`,
+    //////////MOVIE//////////
+    SEARCH_MOVIES : `${API_BASE_URL}/Movies/SearchMovie`
 };
 
 export default API_ENDPOINTS;

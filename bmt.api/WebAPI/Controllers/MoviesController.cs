@@ -22,7 +22,7 @@ public class MoviesController : ControllerBase
     /// <param name="req"></param>
     /// <returns></returns>
     [HttpPost("SearchMovie")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<SearchMovieReq>))]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<MovieSearchRes>))]
     [Authorize(Roles = "client,admin")]
     public async Task<IActionResult> SearchMovie(SearchMovieReq req)
     {

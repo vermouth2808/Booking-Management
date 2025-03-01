@@ -114,14 +114,17 @@ namespace Core.Infrastructure.Repositories
                 query = query.Where(m => m.Title.Contains(req.KeySearch));
             }
 
-            // Lấy tổng số lượng kết quả để hỗ trợ phân trang (nếu cần)
             int totalRecords = await query.CountAsync();
 
-            var movies = await query.Where(m => m.IsDeleted == false)
+            var pageIndex = Math.Max(1, req.PageIndex);
+            var movies = await query
+                .Where(m => !m.IsDeleted)
                 .OrderBy(m => m.CreatedDate)
-                .Skip((req.PageIndex - 1) * req.PageSize)
+                .Skip((pageIndex - 1) * req.PageSize)
                 .Take(req.PageSize)
                 .ToListAsync();
+
+
 
             if (!movies.Any())
             {

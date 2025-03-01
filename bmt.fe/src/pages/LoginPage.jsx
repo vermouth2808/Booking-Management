@@ -90,7 +90,7 @@ const LoginPage = () => {
                 </Form.Item>
                 <Form.Item>
                     <Form.Item name="remember" valuePropName="checked" noStyle>
-                        <Checkbox><span className="cl_w" >Ghi nhớ đăng nhập</span></Checkbox>
+                        <Checkbox><span className="cl-w" >Ghi nhớ đăng nhập</span></Checkbox>
                     </Form.Item>
 
                     <a className="login-form-forgot login-form-forgot-bottom" href="">
@@ -128,7 +128,7 @@ const LoginPage = () => {
                     >
                         Đăng nhập bằng Google
                     </Button>
-                    <span className="cl_w">Hoặc</span> <a href="">đăng ký ngay!</a>
+                    <span className="cl-w">Hoặc</span> <a href="">đăng ký ngay!</a>
                 </Form.Item>
             </Form>
         </Layout>

@@ -19,6 +19,8 @@ public partial class BookMovieTicketContext : DbContext
 
     public virtual DbSet<BookingDetail> BookingDetails { get; set; }
 
+    public virtual DbSet<Category> Categories { get; set; }
+
     public virtual DbSet<Customer> Customers { get; set; }
 
     public virtual DbSet<Department> Departments { get; set; }
@@ -38,6 +40,11 @@ public partial class BookMovieTicketContext : DbContext
     public virtual DbSet<Staff> Staff { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
+
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        => optionsBuilder.UseSqlServer("Server=DESKTOP-NAQBUOF;Database=Book_Movie_Ticket;User Id=sa;Password=123456;TrustServerCertificate=True;");
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<Banner>(entity =>
@@ -82,6 +89,19 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.Price).HasComment("giá vé từng ghế");
             entity.Property(e => e.SeatId).HasColumnName("SeatID");
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
+        modelBuilder.Entity<Category>(entity =>
+        {
+            entity.ToTable("Category");
+
+            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryName).HasMaxLength(512);
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.Description).HasMaxLength(512);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });

@@ -5,7 +5,14 @@ const API_ENDPOINTS = {
     REFRESH_TOKEN: `${API_BASE_URL}/Auth/refresh-token`,
     IMAGE_URL: `${API_BASE_URL}/Banners/GetById/`,
     //////////MOVIE//////////
-    SEARCH_MOVIES : `${API_BASE_URL}/Movies/SearchMovie`
+    SEARCH_MOVIES : `${API_BASE_URL}/Movies/SearchMovie`,
+
+    /////////CATEGORIES//////
+    READ_ALL_CATEGORY : `${API_BASE_URL}/Categorys/ReadAll`,
+    CREATE_CATEGORY : `${API_BASE_URL}/Categorys/Create`,
+    UPDATE_CATEGORY : `${API_BASE_URL}/Categorys/Update`,
+    GET_BY_ID_CATEGORY : `${API_BASE_URL}/Categorys/GetById/`,
+    DELETE_CATEGORY:`${API_BASE_URL}/Categorys/Delete/`
 };
 
 export default API_ENDPOINTS;

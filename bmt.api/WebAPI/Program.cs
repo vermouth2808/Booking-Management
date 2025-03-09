@@ -13,6 +13,7 @@ using StackExchange.Redis;
 using Core.Infrastructure.Redis;
 using Core.Shared.DTOs.Response.ShowTime;
 using Core.Shared.DTOs.Response.Banner;
+using Core.Shared.DTOs.Response.Category;
 using Core.Application.Mapper;
 
 internal class Program
@@ -85,6 +86,9 @@ internal class Program
 
         builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
         builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
+        
+        builder.Services.AddScoped<ICategoryService<CategoryRes>, CategoryService<CategoryRes>>();
+        builder.Services.AddScoped<ICategoryRepository<CategoryRes>, CategoryRepository<CategoryRes>>();
 
         builder.Services.AddScoped<IBannerRepository<BannerRes>, BannerRepository<BannerRes>>();
 

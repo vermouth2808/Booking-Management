@@ -38,6 +38,10 @@
 /* 🎬 Header               */
 /* ======================== */
 .header {
+  position: fixed;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -52,7 +56,7 @@
   font-size: 22px;
   font-weight: bold;
   font-family: var(--text-font-family);
-  color: var(--text-primary);
+  color: #ff3377;
 }
 
 .title {
@@ -101,6 +105,7 @@
   transform: translateY(-5px);
   box-shadow: var(--card-box-shadow);
 }
+
 /* 🎥 Movie Image */
 .movie-image {
   position: relative;
@@ -163,7 +168,7 @@
   color: gold;
 }
 
-.movie-carousel{
+.movie-carousel {
   width: 100%;
   padding: 20px;
 }
@@ -242,4 +247,56 @@
 
 .cl-w {
   color: #fff;
+}
+
+.btn-see-more {
+  color: blue;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer {
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 40px 20px;
+}
+
+.footer-title {
+  color: #ff3377;
+  border-bottom: 2px solid #ff3377;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-social {
+  text-align: center;
+  font-size: 24px;
+}
+
+.footer-social-icon {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-link {
+  color: #ff3377;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
 }

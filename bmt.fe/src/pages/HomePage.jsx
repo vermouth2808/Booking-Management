@@ -1,20 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Layout, Switch, Typography, Dropdown, Space ,Rate,Carousel} from "antd";
-import { MoonOutlined, SunOutlined, DownOutlined } from "@ant-design/icons";
+import { Button, Carousel, Layout, Rate, Typography } from "antd";
 import { motion } from "framer-motion";
+import React, { useEffect, useState } from "react";
 import MovieService from "../services/MovieService";
-import Category from "../services/CategoryService"
-import { toggleDarkMode } from "../store/themeSlice";
+import { useSelector } from "react-redux";
 
-const { Header, Content, Footer } = Layout;
+const { Content } = Layout;
 const { Title } = Typography;
 
 const HomePage = () => {
-  const [movies, setMovies] = useState([]);
-  const [categorories, setCategories] = useState([]);
   const darkMode = useSelector((state) => state.theme.darkMode);
-  const dispatch = useDispatch();
+  const [movies, setMovies] = useState([]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -32,73 +27,64 @@ const HomePage = () => {
     return () => controller.abort();
   }, []);
 
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const categorories = await Category.getAllCategory();
-        console.log("API response:", categorories);
-        setCategories(Array.isArray(categorories) ? categorories : []);
-      } catch (error) {
-        console.error("Error fetching category:", error)
-        setCategories([]);
-      }
-    };
-    fetchCategories();
-  }, []);
-
-  const items = categorories.map((category) => ({
-    key: category.categoryId,
-    label: category.categoryName
-  }));
   return (
     <Layout className={`layout ${darkMode ? "dark" : "light"}`}>
-      <Header className="header">
-        <Title level={3} className="header-title"><span>TA-Cinema</span></Title>
-        <Dropdown menu={{ items }}>
-          <a>
-            <Space className="dropdown">
-             <span>Thể loại</span> 
-              <DownOutlined />
-            </Space>
-          </a>
 
-        </Dropdown>
-        <Switch
-          checked={darkMode}
-          checkedChildren={<MoonOutlined />}
-          unCheckedChildren={<SunOutlined />}
-          onChange={() => dispatch(toggleDarkMode())}
-        />
-      </Header>
 
       <Content className="content">
         <Title ><div className="title"><span>Phim đang chiếu</span> </div></Title>
         <div className="movie-carousel">
-      {movies.length > 0 ? (
-        <Carousel
-          dots={true}
-          autoplay
-          autoplaySpeed={3000}
-          slidesToShow={5} // Số phim hiển thị trên desktop
-          slidesToScroll={1}
-          responsive={[
-            { breakpoint: 1024, settings: { slidesToShow: 3, slidesToScroll: 1 } },
-            { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
-            { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
-          ]}
-        >
-          {movies.map((movie, index) => (
-            <MovieCard key={movie.movieId || index} movie={movie} index={index} />
-          ))}
-        </Carousel>
-      ) : (
-        <p className="no-movie">Không có phim nào để hiển thị.</p>
-      )}
-    </div>
+          {movies.length > 0 ? (
+            <Carousel
+              dots={true}
+              autoplay
+              autoplaySpeed={3000}
+              slidesToShow={5} // Số phim hiển thị trên desktop
+              slidesToScroll={1}
+              responsive={[
+                { breakpoint: 1024, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+                { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+                { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+              ]}
+            >
+              {movies.map((movie, index) => (
+                <MovieCard key={movie.movieId || index} movie={movie} index={index} />
+              ))}
+            </Carousel>
+          ) : (
+            <p className="no-movie">Không có phim nào để hiển thị.</p>
+          )}
+          <div className="btn-see-more"><Button>Xem thêm</Button></div>
+
+        </div>
+      </Content>
+      <Content className="content">
+        <Title ><div className="title"><span>Phim sắp chiếu</span> </div></Title>
+        <div className="movie-carousel">
+          {movies.length > 0 ? (
+            <Carousel
+              dots={true}
+              autoplay
+              autoplaySpeed={3000}
+              slidesToShow={5} // Số phim hiển thị trên desktop
+              slidesToScroll={1}
+              responsive={[
+                { breakpoint: 1024, settings: { slidesToShow: 3, slidesToScroll: 1 } },
+                { breakpoint: 768, settings: { slidesToShow: 2, slidesToScroll: 1 } },
+                { breakpoint: 480, settings: { slidesToShow: 1, slidesToScroll: 1 } },
+              ]}
+            >
+              {movies.map((movie, index) => (
+                <MovieCard key={movie.movieId || index} movie={movie} index={index} />
+              ))}
+            </Carousel>
+          ) : (
+            <p className="no-movie">Không có phim nào để hiển thị.</p>
+          )}
+          <div className="btn-see-more"><Button>Xem thêm</Button></div>
+        </div>
       </Content>
 
-      <Footer className="footer">CineFuture ©2025 - Experience the Future of Cinema</Footer>
     </Layout>
   );
 };
@@ -119,7 +105,7 @@ const MovieCard = ({ movie, index }) => {
         <p className="movie-title">{movie.title}</p>
         <p className="movie-genre">{movie.genre}</p>
         <p className="movie-description">{movie.description}</p>
-        <p className="movie-rating"><Rate disabled defaultValue={movie.rating ? movie.rating : 4}/> </p>
+        <p className="movie-rating"><Rate disabled defaultValue={movie.rating ? movie.rating : 4} /> </p>
       </div>
     </motion.div>
   );

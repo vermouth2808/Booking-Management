@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Typography, Tag, Button, Modal } from "antd";
+import { Typography, Tag, Button, Modal, Tooltip } from "antd";
 import { useParams } from "react-router-dom";
-import { ClockCircleOutlined, PlayCircleOutlined } from "@ant-design/icons";
+import { ClockCircleOutlined, UserOutlined, GlobalOutlined, VideoCameraOutlined, StarOutlined, SmileOutlined, PlayCircleOutlined } from "@ant-design/icons";
 import "../detailMovie/DetailMovie.css";
 import { useSelector } from "react-redux";
 import MovieService from "../../services/MovieService";
@@ -28,85 +28,113 @@ const DetailMovie = () => {
     fetchMovieDetail();
   }, [id]);
 
-
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
       {movie ? (
         <>
+          {/* Poster Phim */}
           <div className="movie-poster">
             <img src={movie.posterUrl || "https://via.placeholder.com/400x600"} alt={movie.title} />
           </div>
 
+          {/* Thông Tin Phim */}
           <div className="movie-info">
-            <Title level={2}><span className="movie-title">{movie.title} (P) - ID: {id}</span> </Title>
-            <div className="movie-tags">
-              <Tag color="gold"><span className="movie-genre">{movie.genre}</span></Tag>
-              <Tag icon={<ClockCircleOutlined />} color="blue">
-                {movie.duration || "84'"}
-              </Tag>
-              <Tag color="purple"><span className="movie-category">{movie.category}</span> </Tag>
-              <Tag color="red">Phụ Đề</Tag>
-            </div>
+            <Title level={2}><span className="movie-title">{movie.title}</span></Title>
 
             <div className="movie-age">
-              <Tag color="yellow">🎭 P: {movie.ageRating || "Phim dành cho khán giả mọi lứa tuổi"}</Tag>
+              {/* Thể loại */}
+              <Tag icon={<StarOutlined />} color="gold">
+                <span className="movie-genre">Thể loại: {movie.genre}</span>
+              </Tag>
             </div>
-
-            <div>
+            <div className="movie-age">
+              {/* Thời lượng */}
+              <Tag icon={<ClockCircleOutlined />} color="blue">
+                Thời lượng: {movie.duration || "84'"}
+              </Tag>
+            </div>
+            <div className="movie-age">
+              {/* Đạo diễn */}
+              <Tag icon={<VideoCameraOutlined />} color="purple">
+                Đạo diễn: {movie.director}
+              </Tag>
+            </div>
+            <div className="movie-age">
+              {/* Diễn viên có tooltip */}
+              <Tooltip title={movie.performer} mouseEnterDelay={0.5}>
+                <Tag icon={<UserOutlined />} color="purple">
+                  <span className="movie-category">
+                    Diễn viên: {movie.performer?.length > 50 ? movie.performer.substring(0, 50) + "..." : movie.performer}
+                  </span>
+                </Tag>
+              </Tooltip>
+            </div>
+            <div className="movie-age">
+              {/* Ngôn ngữ */}
+              <Tag icon={<GlobalOutlined />} color="red">
+                Ngôn ngữ: {movie.language}
+              </Tag>
+            </div>
+            <div className="movie-age">
+              {/* Độ tuổi */}
+              <Tag icon={<SmileOutlined />} color="yellow">
+                🎭 P: {movie.ageRating}
+              </Tag>
+            </div>
+            <div className="movie-age">
+              {/* Mô tả */}
               <Title level={4}><span className="movie-title">MÔ TẢ</span></Title>
               <Text><span className="movie-releaseDate">Khởi chiếu: {movie.releaseDate}</span></Text>
-
-              <Title level={4}><span className="movie-title">NỘI DUNG PHIM</span></Title>
-              <Paragraph
-                className={`movie-description ${isExpanded ? "expanded" : ""}`}
-                ellipsis={!isExpanded ? { rows: 2, expandable: false } : false}
-              >
-                {movie.description || "Mô tả phim chưa có."}
-              </Paragraph>
-              <Button
-                type="link"
-                onClick={() => setIsExpanded(!isExpanded)}
-              >
-                {isExpanded ? "Thu gọn" : "Đọc thêm"}
-              </Button>
             </div>
-
+            {/* Nội dung phim */}
+            <Title level={4}><span className="movie-title">NỘI DUNG PHIM</span></Title>
+            <Paragraph
+              className={`movie-description ${isExpanded ? "expanded" : ""}`}
+              ellipsis={isExpanded ? false : { rows: 2, expandable: false }}
+            >
+              {movie.description || "Mô tả phim chưa có."}
+            </Paragraph>
+            <Button type="link" onClick={() => setIsExpanded(!isExpanded)}>
+              {isExpanded ? "Thu gọn" : "Đọc thêm"}
+            </Button>
+            <div className="movie-age">
+            {/* Nút Xem Trailer */}
             {movie.trailerUrl && (
-              <>
-                <Button
-                  type="primary"
-                  shape="round"
-                  icon={<PlayCircleOutlined />}
-                  size="large"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  Xem Trailer
-                </Button>
-
-                <Modal
-                  title={`Trailer phim : ${movie.title}`}
-                  open={isModalOpen}
-                  onCancel={() => setIsModalOpen(false)}
-                  footer={null}
-                  width={800}
-                  centered
-                >
-                  <iframe
-                    width="100%"
-                    height="400"
-                    src={movie.trailerUrl}
-                    title="YouTube video player"
-                    frameBorder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    referrerPolicy="strict-origin-when-cross-origin"
-                    allowFullScreen
-                  ></iframe>
-
-
-                </Modal>
-              </>
+              <Button
+                type="primary"
+                shape="round"
+                icon={<PlayCircleOutlined />}
+                size="large"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Xem Trailer
+              </Button>
             )}
           </div>
+          </div>
+
+          {/* Modal Trailer */}
+          {movie.trailerUrl && (
+            <Modal
+              title={`Trailer phim: ${movie.title}`}
+              open={isModalOpen}
+              onCancel={() => setIsModalOpen(false)}
+              footer={null}
+              width={800}
+              centered
+            >
+              <iframe
+                width="100%"
+                height="400"
+                src={movie.trailerUrl}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              ></iframe>
+            </Modal>
+          )}
         </>
       ) : (
         <p className="no-movie">Không có phim nào để hiển thị.</p>

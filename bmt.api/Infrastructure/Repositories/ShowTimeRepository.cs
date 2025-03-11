@@ -27,7 +27,7 @@ namespace Core.Infrastructure.Repositories
         {
             var ShowTime = new Showtime()
             {
-                Room = req.Room,
+                RoomId = req.RoomId,
                 StartTime = req.StartTime,
                 EndTime = req.EndTime,
                 Price = req.Price,
@@ -102,11 +102,11 @@ namespace Core.Infrastructure.Repositories
 
             var query = _context.Showtimes.AsQueryable().Where(s => s.IsDeleted == false);
 
-            if (!string.IsNullOrEmpty(req.KeySearch))
+          /*  if (!string.IsNullOrEmpty(req.KeySearch))
             {
-                query = query.Where(s => s.Room.Contains(req.KeySearch));
+                query = query.Where(s => s.RoomId.Contains(req.KeySearch));
             }
-
+*/
             int totalRecords = await query.CountAsync();
 
             var ShowTimes = await query.OrderBy(s => s.CreatedDate)
@@ -138,7 +138,7 @@ namespace Core.Infrastructure.Repositories
                 return Result<bool>.Failure("ShowTime not found");
             }
             string cacheKey = $"ShowTime_{req.ShowtimeId}";
-            ShowTime.Room = req.Room ?? ShowTime.Room;
+            //ShowTime.RoomId = req.RoomId ?? ShowTime.RoomId;
             ShowTime.StartTime = req.StartTime ?? ShowTime.StartTime;
             ShowTime.EndTime = req.EndTime ?? ShowTime.EndTime;
             ShowTime.Price = req.Price ?? ShowTime.Price;

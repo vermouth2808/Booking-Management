@@ -3,7 +3,7 @@
     public class CreateShowTimeReq
     {
 
-        public string? Room { get; set; }
+        public int RoomId { get; set; }
 
         public DateTime? StartTime { get; set; }
 

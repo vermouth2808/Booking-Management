@@ -33,6 +33,8 @@ public partial class BookMovieTicketContext : DbContext
 
     public virtual DbSet<Role> Roles { get; set; }
 
+    public virtual DbSet<Room> Rooms { get; set; }
+
     public virtual DbSet<Seat> Seats { get; set; }
 
     public virtual DbSet<Showtime> Showtimes { get; set; }
@@ -140,6 +142,7 @@ public partial class BookMovieTicketContext : DbContext
             entity.ToTable("Movie");
 
             entity.Property(e => e.MovieId).HasColumnName("MovieID");
+            entity.Property(e => e.AgeRating).HasMaxLength(512);
             entity.Property(e => e.CreatedDate).HasColumnType("datetime");
             entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.Description).HasMaxLength(512);
@@ -199,6 +202,21 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });
 
+        modelBuilder.Entity<Room>(entity =>
+        {
+            entity.HasKey(e => e.RoomId).HasName("PK_Room_1");
+
+            entity.ToTable("Room");
+
+            entity.Property(e => e.RoomId).HasColumnName("RoomID");
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.Description).HasMaxLength(512);
+            entity.Property(e => e.RoomName).HasMaxLength(512);
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
         modelBuilder.Entity<Seat>(entity =>
         {
             entity.ToTable("Seat");
@@ -209,7 +227,7 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.IsVip)
                 .HasComment("1:ghế VIP, 0 : ghế thường")
                 .HasColumnName("IsVIP");
-            entity.Property(e => e.Room).HasMaxLength(512);
+            entity.Property(e => e.RoomId).HasColumnName("RoomID");
             entity.Property(e => e.SeatNumber)
                 .HasMaxLength(10)
                 .HasComment("Số ghế (ví dụ: A1, A2)");
@@ -226,7 +244,7 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
             entity.Property(e => e.EndTime).HasColumnType("datetime");
             entity.Property(e => e.MovieId).HasColumnName("MovieID");
-            entity.Property(e => e.Room).HasMaxLength(50);
+            entity.Property(e => e.RoomId).HasColumnName("RoomID");
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");

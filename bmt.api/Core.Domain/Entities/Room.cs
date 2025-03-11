@@ -3,21 +3,13 @@ using System.Collections.Generic;
 
 namespace Core.Domain.Entities;
 
-public partial class Seat
+public partial class Room
 {
-    public int SeatId { get; set; }
-
     public int RoomId { get; set; }
 
-    /// <summary>
-    /// Số ghế (ví dụ: A1, A2)
-    /// </summary>
-    public string? SeatNumber { get; set; }
+    public string RoomName { get; set; } = null!;
 
-    /// <summary>
-    /// 1:ghế VIP, 0 : ghế thường
-    /// </summary>
-    public bool? IsVip { get; set; }
+    public string? Description { get; set; }
 
     public DateTime CreatedDate { get; set; }
 

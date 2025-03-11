@@ -3,7 +3,7 @@
     public class UpdateShowTimeReq
     {
         public int ShowtimeId { get; set; }
-        public string? Room { get; set; }
+        public int RoomId { get; set; }
 
         public DateTime? StartTime { get; set; }
 

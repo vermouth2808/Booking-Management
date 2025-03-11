@@ -34,6 +34,8 @@ public partial class Movie
 
     public string? TrailerUrl { get; set; }
 
+    public string? AgeRating { get; set; }
+
     public string? Description { get; set; }
 
     public DateTime CreatedDate { get; set; }

@@ -36,6 +36,7 @@ namespace Core.Infrastructure.Repositories
                 ReleaseDate = req.ReleaseDate,
                 PosterUrl = req.PosterUrl,
                 TrailerUrl = req.TrailerUrl,
+                AgeRating = req.AgeRating,
                 Description = req.Description,
                 CreatedDate = DateTime.UtcNow,
                 CreatedUserId = CreatedUserId,
@@ -43,6 +44,7 @@ namespace Core.Infrastructure.Repositories
                 UpdatedUserId = CreatedUserId,
                 IsDeleted = false,
             };
+
             _context.Movies.Add(movie);
             await _context.SaveChangesAsync();
             await _redisCacheService.RemoveByPatternAsync("movies_");
@@ -115,10 +117,14 @@ namespace Core.Infrastructure.Repositories
             }
 
             int totalRecords = await query.CountAsync();
+            var fromDate = DateOnly.FromDateTime(req.FromDate);
+            var toDate = DateOnly.FromDateTime(req.ToDate);
 
             var pageIndex = Math.Max(1, req.PageIndex);
             var movies = await query
-                .Where(m => !m.IsDeleted)
+                .Where(m => !m.IsDeleted
+                    && m.ReleaseDate >= fromDate
+                    && m.ReleaseDate <= toDate)
                 .OrderBy(m => m.CreatedDate)
                 .Skip((pageIndex - 1) * req.PageSize)
                 .Take(req.PageSize)
@@ -160,7 +166,9 @@ namespace Core.Infrastructure.Repositories
             movie.ReleaseDate = req.ReleaseDate ?? movie.ReleaseDate;
             movie.PosterUrl = req.PosterUrl ?? movie.PosterUrl;
             movie.TrailerUrl = req.TrailerUrl ?? movie.TrailerUrl;
+            movie.AgeRating = req.AgeRating ?? movie.AgeRating;
             movie.Description = req.Description ?? movie.Description;
+
             _context.Movies.Update(movie);
             await _context.SaveChangesAsync();
 

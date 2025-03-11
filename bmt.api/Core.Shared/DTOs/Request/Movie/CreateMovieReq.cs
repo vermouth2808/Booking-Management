@@ -2,11 +2,14 @@
 {
     public class CreateMovieReq
     {
-
         public string Title { get; set; } = null!;
+
         public string? Director { get; set; }
+
         public string? Performer { get; set; }
+
         public string? Language { get; set; }
+
         /// <summary>
         /// thể loại
         /// </summary>
@@ -25,6 +28,8 @@
         public string? PosterUrl { get; set; }
 
         public string? TrailerUrl { get; set; }
+
+        public string? AgeRating { get; set; }
 
         public string? Description { get; set; }
     }

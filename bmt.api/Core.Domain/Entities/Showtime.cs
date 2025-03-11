@@ -9,7 +9,7 @@ public partial class Showtime
 
     public int MovieId { get; set; }
 
-    public string? Room { get; set; }
+    public int RoomId { get; set; }
 
     public DateTime? StartTime { get; set; }
 

@@ -1,0 +1,87 @@
+.detail-container {
+    display: flex;
+    gap: 24px;
+    background: var(--bg);
+    padding: 40px;
+    border-radius: 10px;
+    color: white;
+  }
+  
+  .movie-poster img {
+    width: 400px;
+    height: 600px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+  
+  .movie-info {
+    flex: 1;
+  }
+  
+  .movie-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .movie-age {
+    margin-bottom: 20px;
+  }
+  
+  .movie-description {
+    margin-bottom: 20px;
+  }
+  
+  .ant-btn-primary {
+    background-color: #ff4d4f;
+    border-color: #ff4d4f;
+    font-size: 16px;
+  }
+  
+  .movie-releaseDate
+  {
+    font-size: 12px;
+    color: var(--text-secondary);
+    font-family: var(--text-font-family);
+  }
+
+  .detail-container {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+  }
+  
+  .detail-wrapper {
+    display: flex;
+    max-width: 1200px;
+    width: 100%;
+    gap: 20px;
+  }
+  
+  .movie-poster img {
+    width: 350px;
+    border-radius: 10px;
+  }
+  
+  .movie-info {
+    flex: 1;
+  }
+  
+  .movie-tags {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .movie-age {
+    margin-bottom: 15px;
+  }
+  
+  .movie-description-section {
+    margin-top: 15px;
+  }
+  
+  .trailer-modal {
+    text-align: center;
+  }
+  

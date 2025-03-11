@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice";
 import Category from "../../services/CategoryService";
-import "./Header";
 
 
 const { Title } = Typography;
@@ -31,7 +30,7 @@ const Header = () => {
     label: category.categoryName
   }));
   return (
-    <Header className="header">
+    <header className={`header-app ${darkMode ? "dark" : "light"}`}>
       <Title level={3} className="header-title"><span>TA-Cinema</span></Title>
       <Dropdown menu={{ items }}>
         <a>
@@ -48,7 +47,7 @@ const Header = () => {
         unCheckedChildren={<SunOutlined />}
         onChange={() => dispatch(toggleDarkMode())}
       />
-    </Header>
+    </header>
   );
 };
 export default Header;

@@ -1,14 +1,13 @@
+import { FacebookOutlined, InstagramOutlined, TwitterOutlined, YoutubeOutlined } from "@ant-design/icons";
+import { Col, Row } from "antd";
 import React from "react";
-import "./Footer";
-import { Layout, Switch, Typography, Dropdown, Space, Rate, Carousel, Button, Row, Col } from "antd";
-import { MoonOutlined, SunOutlined, DownOutlined, FacebookOutlined, TwitterOutlined, InstagramOutlined, YoutubeOutlined } from "@ant-design/icons";
-
+import { useSelector } from "react-redux";
 
 const Footer = () => {
-
+    const darkMode = useSelector((state) => state.theme.darkMode);
     const TACinemaFooter = () => {
         return (
-            <Footer className="footer">
+            <footer className={`footer-app ${darkMode ? "dark" : "light"}`}>
                 <span>
                     TA-Cinema - Đồng hành cùng bạn trong những thước phim
                     Bạn muốn tận hưởng những giây phút giải trí tại rạp chiếu phim nhưng không biết nên chọn bộ phim nào giữa hàng loạt tác phẩm hấp dẫn? Hãy truy cập TA-Cinema để nhanh chóng tìm được bộ phim phù hợp trước khi ra rạp!
@@ -76,7 +75,7 @@ const Footer = () => {
                         <a href="#" className="footer-link"> About Us</a>
                     </Col>
                 </Row>
-            </Footer>
+            </footer>
         );
     };
     return (

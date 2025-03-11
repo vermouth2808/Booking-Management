@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import React, { useEffect, useState } from "react";
 import MovieService from "../services/MovieService";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const { Content } = Layout;
 const { Title } = Typography;
@@ -19,7 +20,7 @@ const HomePage = () => {
         setMovies(Array.isArray(moviesData) ? moviesData : []);
       } catch (error) {
         console.error("Error fetching movies:", error);
-        setMovies([]); // Nếu lỗi thì đặt danh sách rỗng
+        setMovies([]);
       }
     };
 
@@ -29,8 +30,6 @@ const HomePage = () => {
 
   return (
     <Layout className={`layout ${darkMode ? "dark" : "light"}`}>
-
-
       <Content className="content">
         <Title ><div className="title"><span>Phim đang chiếu</span> </div></Title>
         <div className="movie-carousel">
@@ -98,7 +97,9 @@ const MovieCard = ({ movie, index }) => {
       transition={{ duration: 0.5, delay: index * 0.1 }}
     >
       <div className="movie-image">
-        <img src={movie.posterUrl || "https://via.placeholder.com/240x350"} alt={movie.title} />
+        <Link to={`/movie/${movie.movieId}`}>
+          <img src={movie.posterUrl || "https://via.placeholder.com/240x350"} alt={movie.title} />
+        </Link>
       </div>
       <div className="movie-info">
         <p className="movie-rank"><span>{index + 1}</span></p>

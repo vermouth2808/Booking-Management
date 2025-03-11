@@ -1,5 +1,5 @@
 import api from "../api/api"
-import API_ENDPOINTS from "../config/Config"
+import API_ENDPOINTS, { API_BASE_URL } from "../config/Config"
 
 const MovieService = {
     async searchMovies() {
@@ -15,7 +15,22 @@ const MovieService = {
             console.error("Failed to fetch movies", error);
             return [];
         }
+    },
+    async movieDetail(id) {  
+        if (!id) {
+            console.error("Movie ID is undefined!");
+            return null;
+        }
+
+        try {
+            const res = await api.get(`${API_ENDPOINTS.GET_BY_ID_MOVIE}/${id}`);
+            return res.data;
+        } catch (error) {
+            console.error("Failed to fetch movie", error);
+            return null;
+        }
     }
+    
 }
 
 export default MovieService;

@@ -5,6 +5,7 @@
   --primary: #007AFF;
   --bg: #F5F5F5;
   --card-bg: #FFFFFF;
+  --header:#F5F5F5;
   --text-primary: #222;
   --text-secondary: #555;
   --border: #DDDDDD;
@@ -15,7 +16,8 @@
 
 .dark {
   --primary: #0A84FF;
-  --bg: #121212;
+  --bg: #0c1532;
+  --header:#192653;
   --card-bg: #1E1E1E;
   --text-primary: #EAEAEA;
   --text-secondary: #B0B0B0;
@@ -37,21 +39,35 @@
 /* ======================== */
 /* 🎬 Header               */
 /* ======================== */
-.header {
-  position: fixed;
+.layout-wrapper {
+ /* width: 1400px; /* Hoặc 100% tuỳ theo thiết kế */
+  margin: 0 auto; /* Canh giữa */
+  position: relative; /* Để header có thể bám theo */
+}
+
+.header-app {
+  position: fixed; /* Hoặc absolute nếu muốn nó nằm trong cha */
+  width: 100%; /* Đảm bảo header full width */
+  max-width: 1420px; /* Hoặc theo thiết kế */
+  left: 50%;
+  transform: translateX(-50%); /* Căn giữa */
+  top: 0;
   z-index: 1000;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-  width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 15px 20px;
+  padding: 15px 40px;
   border-bottom: 1px solid var(--border);
   font-family: var(--text-font-family);
-  background: var(--card-bg);
+  background: var(--header);
   transition: var(--transition);
 }
 
+
+.main-layout{
+  padding-top: 90px; 
+}
 .header-title span {
   font-size: 22px;
   font-weight: bold;
@@ -152,7 +168,6 @@
   overflow: hidden;
   font-family: var(--text-font-family);
   color: var(--text-primary);
-
   text-overflow: ellipsis;
 }
 
@@ -176,12 +191,12 @@
 /* ======================== */
 /* 🎬 Footer               */
 /* ======================== */
-.footer {
+.footer-app {
   text-align: center;
   padding: 15px;
   font-size: 14px;
   border-top: 1px solid var(--border);
-  background: var(--card-bg);
+  background: var(--header);
   color: var(--text-secondary);
   transition: var(--transition);
 }

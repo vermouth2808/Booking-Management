@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace Core.Domain.Entities;
 
@@ -40,6 +42,8 @@ public partial class BookMovieTicketContext : DbContext
     public virtual DbSet<Showtime> Showtimes { get; set; }
 
     public virtual DbSet<Staff> Staff { get; set; }
+
+    public virtual DbSet<Ticket> Tickets { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -248,6 +252,18 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+
+            // Thiết lập quan hệ với Movie
+            entity.HasOne(s => s.Movie)
+                  .WithMany(m => m.Showtimes)
+                  .HasForeignKey(s => s.MovieId)
+                  .OnDelete(DeleteBehavior.Cascade);
+
+            // Thiết lập quan hệ với Room
+            entity.HasOne(s => s.Room)
+                  .WithMany(r => r.Showtimes)
+                  .HasForeignKey(s => s.RoomId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
 
         modelBuilder.Entity<Staff>(entity =>
@@ -266,6 +282,23 @@ public partial class BookMovieTicketContext : DbContext
                 .IsUnicode(false);
             entity.Property(e => e.StaffName).HasMaxLength(512);
             entity.Property(e => e.StaffStatusId).HasColumnName("StaffStatusID");
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
+        modelBuilder.Entity<Ticket>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToTable("Ticket");
+
+            entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.CustomerId).HasColumnName("CustomerID");
+            entity.Property(e => e.SeatId).HasColumnName("SeatID");
+            entity.Property(e => e.ShowtimeId).HasColumnName("ShowtimeID");
+            entity.Property(e => e.Status).HasMaxLength(50);
+            entity.Property(e => e.TicketId).HasColumnName("TicketID");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
         });

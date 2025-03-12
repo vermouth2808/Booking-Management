@@ -22,7 +22,7 @@ public class ShowTimesController : ControllerBase
     /// <param name="req"></param>
     /// <returns></returns>
     [HttpPost("SearchShowTime")]
-    [ProducesResponseType(200, Type = typeof(IEnumerable<SearchShowTimeReq>))]
+    [ProducesResponseType(200, Type = typeof(IEnumerable<ShowTimeSearchRes>))]
     [Authorize(Roles = "client,admin")]
     public async Task<IActionResult> SearchShowTime(SearchShowTimeReq req)
     {

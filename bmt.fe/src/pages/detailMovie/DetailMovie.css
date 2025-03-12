@@ -5,8 +5,14 @@
     padding: 40px;
     /* border-radius: 10px; */
     color: white;
+    justify-content: center;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: 1fr;
   }
-  
+  .detail-movie{
+    display: flex;
+  }
   .movie-poster img {
     width: 400px;
     height: 600px;
@@ -45,11 +51,6 @@
     font-family: var(--text-font-family);
   }
 
-  .detail-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-  }
   
   .detail-wrapper {
     display: flex;

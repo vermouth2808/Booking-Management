@@ -5,6 +5,7 @@ import { ClockCircleOutlined, UserOutlined, GlobalOutlined, VideoCameraOutlined,
 import "../detailMovie/DetailMovie.css";
 import { useSelector } from "react-redux";
 import MovieService from "../../services/MovieService";
+import ShowtimeSchedule from "../ShowtimeSchedule/ShowtimeSchedule"
 
 const { Title, Text, Paragraph } = Typography;
 
@@ -31,7 +32,7 @@ const DetailMovie = () => {
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
       {movie ? (
-        <>
+        <div className="detail-movie">
           {/* Poster Phim */}
           <div className="movie-poster">
             <img src={movie.posterUrl || "https://via.placeholder.com/400x600"} alt={movie.title} />
@@ -78,9 +79,22 @@ const DetailMovie = () => {
             <div className="movie-age">
               {/* Độ tuổi */}
               <Tag icon={<SmileOutlined />} color="yellow">
-                🎭 P: {movie.ageRating}
+                P: {movie.ageRating}
               </Tag>
             </div>
+
+            {/* Nút Xem Trailer */}
+            {movie.trailerUrl && (
+              <Button
+                type="primary"
+                shape="round"
+                icon={<PlayCircleOutlined />}
+                size="large"
+                onClick={() => setIsModalOpen(true)}
+              >
+                Xem Trailer
+              </Button>
+            )}
             <div className="movie-age">
               {/* Mô tả */}
               <Title level={4}><span className="movie-title">MÔ TẢ</span></Title>
@@ -97,20 +111,7 @@ const DetailMovie = () => {
             <Button type="link" onClick={() => setIsExpanded(!isExpanded)}>
               {isExpanded ? "Thu gọn" : "Đọc thêm"}
             </Button>
-            <div className="movie-age">
-            {/* Nút Xem Trailer */}
-            {movie.trailerUrl && (
-              <Button
-                type="primary"
-                shape="round"
-                icon={<PlayCircleOutlined />}
-                size="large"
-                onClick={() => setIsModalOpen(true)}
-              >
-                Xem Trailer
-              </Button>
-            )}
-          </div>
+
           </div>
 
           {/* Modal Trailer */}
@@ -135,11 +136,15 @@ const DetailMovie = () => {
               ></iframe>
             </Modal>
           )}
-        </>
+        </div>
       ) : (
         <p className="no-movie">Không có phim nào để hiển thị.</p>
       )}
+
+      <ShowtimeSchedule />
+
     </div>
+
   );
 };
 

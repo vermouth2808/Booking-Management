@@ -3,13 +3,19 @@ using System.Collections.Generic;
 
 namespace Core.Domain.Entities;
 
-public partial class Room
+public partial class Ticket
 {
-    public int RoomId { get; set; }
+    public int TicketId { get; set; }
 
-    public string RoomName { get; set; } = null!;
+    public int ShowtimeId { get; set; }
 
-    public string? Description { get; set; }
+    public int SeatId { get; set; }
+
+    public int CustomerId { get; set; }
+
+    public double Price { get; set; }
+
+    public string? Status { get; set; }
 
     public DateTime CreatedDate { get; set; }
 
@@ -20,5 +26,4 @@ public partial class Room
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
-    public virtual ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
 }

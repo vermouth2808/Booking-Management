@@ -41,7 +41,7 @@ const Header = () => {
         </a>
 
       </Dropdown>
-      <Switch
+      <Switch className="header-switch"
         checked={darkMode}
         checkedChildren={<MoonOutlined />}
         unCheckedChildren={<SunOutlined />}

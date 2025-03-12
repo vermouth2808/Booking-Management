@@ -47,4 +47,5 @@ public partial class Movie
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
+    public virtual ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
 }

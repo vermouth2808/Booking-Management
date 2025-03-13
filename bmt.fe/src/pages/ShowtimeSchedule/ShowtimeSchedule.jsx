@@ -1,75 +1,121 @@
-import React, { useState } from "react";
-import { Card, Button, Select, Collapse, Tag } from "antd";
-import { EnvironmentOutlined } from "@ant-design/icons";
+import React, { useEffect, useState } from "react";
+import { Collapse, Tag, Button } from "antd";
 import { useSelector } from "react-redux";
+import ShowTimeService from "../../services/ShowTimeService";
 import "./ShowtimeSchedule.css";
 
-const { Option } = Select;
 const { Panel } = Collapse;
 
-const showtimesData = [
-  {
-    id: 1,
-    cinema: "Cinestar Quốc Thanh (TP.HCM)",
-    address: "271 Nguyễn Trãi, Phường Nguyễn Cư Trinh, Quận 1, TP.HCM",
-    type: "Standard",
-    times: ["11:00", "16:45", "18:30"],
-  },
-  {
-    id: 2,
-    cinema: "Cinestar Hai Bà Trưng (TP.HCM)",
-    address: "135 Hai Bà Trưng, Phường Bến Nghé, Quận 1, TP.HCM",
-    type: "Deluxe",
-    times: ["11:45", "13:25"],
-  },
-];
-
-const ShowtimeSchedule = () => {
+const ShowtimeSchedule = ({ movieId }) => {
   const darkMode = useSelector((state) => state.theme.darkMode);
-  const [selectedDate, setSelectedDate] = useState("11/03");
-  const [selectedCity, setSelectedCity] = useState("Hồ Chí Minh");
+  const [showtimes, setShowtimes] = useState([]);
+  const [showtimeDetail, setShowtimeDetail] = useState([]);
+  const [selectedShowtimeId, setSelectedShowtimeId] = useState(null);
+
+  useEffect(() => {
+    const fetchShowTime = async () => {
+      try {
+        const now = new Date();
+        const params = {
+          keySearch: "",
+          pageSize: 10,
+          pageIndex: 1,
+          fromDate: new Date(now.getFullYear(), now.getMonth(), 1).toISOString(),
+          toDate: new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString(),
+          movieId: parseInt(movieId, 10),
+          roomId: null,
+        };
+        const showtime = await ShowTimeService.SearchShowTime(params);
+        setShowtimes(Array.isArray(showtime) ? showtime : []);
+      } catch (error) {
+        console.log("Load showtimes failed", error);
+      }
+    };
+    fetchShowTime();
+  }, [movieId]);
+
+  useEffect(() => {
+    const fetchGetDetailShowtime = async () => {
+      if (!selectedShowtimeId) return;
+      try {
+        const detailShowtime = await ShowTimeService.GetDetailShowTime(selectedShowtimeId);
+        setShowtimeDetail(Array.isArray(detailShowtime) ? detailShowtime : []);
+      } catch (error) {
+        console.log("Load showtime detail failed", error);
+      }
+    };
+    fetchGetDetailShowtime();
+  }, [selectedShowtimeId]);
 
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
-      <h2 className="title"><span className="movie-title">LỊCH CHIẾU</span></h2>
-      <div className="date-picker">
-        {["11/03", "12/03", "13/03"].map((date) => (
-          <Button
-            size="large"
-            key={date}
-            className={`date-btn ${selectedDate === date ? "active" : ""}`}
-            onClick={() => setSelectedDate(date)}
-          >
-           <span>
-           {date}
-            <br />
-            {date === "11/03" ? "Thứ Ba" : date === "12/03" ? "Thứ Tư" : "Thứ Năm"}
-            </span> 
-          </Button>
-        ))}
-      </div>
+      <h2 className="title">
+        <span className="movie-title">LỊCH CHIẾU</span>
+      </h2>
 
+      {/* Hiển thị danh sách ngày chiếu (không trùng lặp) */}
+      {showtimes.length > 0 ? (
+        <div className="date-picker">
+          {(() => {
+            const uniqueDates = new Map();
 
-      <h3 className="subtitle"><span className="movie-title">DANH SÁCH PHÒNG</span></h3>
-      <Collapse className="cinema-list" accordion>
-        {showtimesData.map((cinema) => (
-          <Panel
-            header={<span className="cinema-title">{cinema.cinema}</span>}
-            key={cinema.id}
-            className="cinema-panel"
-          >
-            <p className="cinema-address">{cinema.address}</p>
-            <p className="cinema-type">{cinema.type}</p>
-            <div className="showtime-buttons">
-              {cinema.times.map((time, index) => (
-                <Tag key={index} className={`showtime ${index === 0 ? "disabled" : ""}`}>
-                  {time}
-                </Tag>
-              ))}
-            </div>
-          </Panel>
-        ))}
-      </Collapse>
+            return showtimes.map((showtimeItem) => {
+              const startTime = showtimeItem.startTime;
+              const dateObj = new Date(startTime);
+              const formattedDate = dateObj.toLocaleDateString("vi-VN");
+              const dayOfWeek = dateObj.toLocaleDateString("vi-VN", { weekday: "long" });
+
+              // Kiểm tra nếu ngày đã có trong Map thì bỏ qua
+              if (uniqueDates.has(formattedDate)) {
+                return null;
+              }
+
+              uniqueDates.set(formattedDate, showtimeItem.showtimeId);
+
+              return (
+                <Button
+                  size="large"
+                  key={showtimeItem.showtimeId}
+                  className={`date-btn ${selectedShowtimeId === showtimeItem.showtimeId ? "active" : ""}`}
+                  onClick={() => setSelectedShowtimeId(showtimeItem.showtimeId)}
+                >
+                  <span>
+                    {formattedDate}
+                    <br />
+                    {dayOfWeek}
+                  </span>
+                </Button>
+              );
+            });
+          })()}
+        </div>
+      ) : (
+        <p className="no-movie">Chưa có lịch chiếu.</p>
+      )}
+
+      <h3 className="subtitle">
+        <span className="movie-title">DANH SÁCH PHÒNG</span>
+      </h3>
+
+      {/* Danh sách phòng chiếu */}
+      {showtimeDetail.length > 0 ? (
+        <Collapse className="cinema-list" accordion>
+          {showtimeDetail.map((showtime) => (
+            <Panel
+              header={<span className="cinema-title">{showtime.title}</span>}
+              key={showtime.showtimeId}
+              className="cinema-panel"
+            >
+              <p className="cinema-address">{showtime.roomName}</p>
+              <div className="showtime-buttons">
+                <Tag className="showtime">{showtime.startTime}</Tag>
+              </div>
+            </Panel>
+          ))}
+        </Collapse>
+      ) : (
+        <p>Vui lòng chọn ngày chiếu phim.</p>
+      )}
     </div>
   );
 };

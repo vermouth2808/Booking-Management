@@ -12,7 +12,11 @@ const API_ENDPOINTS = {
     CREATE_CATEGORY: `${API_BASE_URL}/Categorys/Create`,
     UPDATE_CATEGORY: `${API_BASE_URL}/Categorys/Update`,
     GET_BY_ID_CATEGORY: `${API_BASE_URL}/Categorys/GetById/`,
-    DELETE_CATEGORY: `${API_BASE_URL}/Categorys/Delete/`
+    DELETE_CATEGORY: `${API_BASE_URL}/Categorys/Delete/`,
+    ////////SHOWTIME////////////////
+    SEARCH_SHOWTIME : `${API_BASE_URL}/ShowTimes/SearchShowTime`,
+    GET_BY_ID_SHOWTIME : `${API_BASE_URL}/ShowTimes/GetById`,
+
 };
 
 export default API_ENDPOINTS;

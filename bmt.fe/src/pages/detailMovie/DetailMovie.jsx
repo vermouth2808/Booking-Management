@@ -28,7 +28,6 @@ const DetailMovie = () => {
 
     fetchMovieDetail();
   }, [id]);
-
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
       {movie ? (
@@ -140,8 +139,8 @@ const DetailMovie = () => {
       ) : (
         <p className="no-movie">Không có phim nào để hiển thị.</p>
       )}
-
-      <ShowtimeSchedule />
+      
+      <ShowtimeSchedule  movieId={id}/>
 
     </div>
 

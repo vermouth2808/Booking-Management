@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route,Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import DetailMovie from "./pages/detailMovie/DetailMovie"
@@ -9,6 +9,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/home" />} />
+
         <Route path="/login" element={<LoginPage />} />
 
         <Route path="/home" element={

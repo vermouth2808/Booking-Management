@@ -140,6 +140,8 @@ namespace Core.Infrastructure.Repositories
             var toDate = DateOnly.FromDateTime(req.ToDate);
             var ShowTimes = await query
                 .Where(s => !s.IsDeleted
+                    || s.MovieId == req.MovieId
+                    || s.RoomId == req.RoomId
                     && DateOnly.FromDateTime((DateTime)s.StartTime) >= fromDate
                     && DateOnly.FromDateTime((DateTime)s.StartTime) <= toDate)
                 .OrderBy(s => s.CreatedDate)

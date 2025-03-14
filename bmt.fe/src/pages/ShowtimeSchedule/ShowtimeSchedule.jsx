@@ -9,8 +9,18 @@ const { Panel } = Collapse;
 const ShowtimeSchedule = ({ movieId }) => {
   const darkMode = useSelector((state) => state.theme.darkMode);
   const [showtimes, setShowtimes] = useState([]);
-  const [showtimeDetail, setShowtimeDetail] = useState([]);
-  const [selectedShowtimeId, setSelectedShowtimeId] = useState(null);
+  const [listRoom, setListRoom] = useState([]);
+  const [groupedShowtimes, setGroupedShowtimes] = useState({}); // Thêm state cho groupedShowtimes
+  const [selectedShowtimeDate, setSelectedShowtimeDate] = useState(null);
+
+
+  useEffect(() => {
+    if (showtimes.length > 0) {
+      const sortedShowtimes = [...showtimes].sort((a, b) => new Date(a.startTime) - new Date(b.startTime));
+      setSelectedShowtimeDate(sortedShowtimes[0].startTime); // Chọn ngày nhỏ nhất
+    }
+  }, [showtimes]);
+
 
   useEffect(() => {
     const fetchShowTime = async () => {
@@ -35,17 +45,42 @@ const ShowtimeSchedule = ({ movieId }) => {
   }, [movieId]);
 
   useEffect(() => {
-    const fetchGetDetailShowtime = async () => {
-      if (!selectedShowtimeId) return;
+    const fetchShowTime = async () => {
       try {
-        const detailShowtime = await ShowTimeService.GetDetailShowTime(selectedShowtimeId);
-        setShowtimeDetail(Array.isArray(detailShowtime) ? detailShowtime : []);
+        const now = new Date();
+        const params = {
+          keySearch: "",
+          pageSize: 10,
+          pageIndex: 1,
+          fromDate: selectedShowtimeDate,
+          toDate: selectedShowtimeDate,
+          movieId: parseInt(movieId, 10),
+          roomId: null,
+        };
+        const showtime = await ShowTimeService.SearchShowTime(params);
+        setListRoom(Array.isArray(showtime) ? showtime : []);
       } catch (error) {
-        console.log("Load showtime detail failed", error);
+        console.log("Load showtimes failed", error);
       }
     };
-    fetchGetDetailShowtime();
-  }, [selectedShowtimeId]);
+    fetchShowTime();
+  }, [selectedShowtimeDate]);
+
+  useEffect(() => {
+    // Nhóm suất chiếu theo roomId
+    const grouped = listRoom.reduce((acc, showtime) => {
+      if (!acc[showtime.roomId]) {
+        acc[showtime.roomId] = {
+          roomName: showtime.roomName,
+          showtimes: [],
+        };
+      }
+      acc[showtime.roomId].showtimes.push(showtime.startTime.split('T')[1].slice(0, 5));
+      return acc;
+    }, {});
+
+    setGroupedShowtimes(grouped); // Cập nhật state groupedShowtimes
+  }, [listRoom]); // Chạy lại khi listRoom thay đổi
 
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
@@ -76,8 +111,8 @@ const ShowtimeSchedule = ({ movieId }) => {
                 <Button
                   size="large"
                   key={showtimeItem.showtimeId}
-                  className={`date-btn ${selectedShowtimeId === showtimeItem.showtimeId ? "active" : ""}`}
-                  onClick={() => setSelectedShowtimeId(showtimeItem.showtimeId)}
+                  className={`date-btn ${selectedShowtimeDate === showtimeItem.startTime ? "active" : ""}`}
+                  onClick={() => setSelectedShowtimeDate(showtimeItem.startTime)}
                 >
                   <span>
                     {formattedDate}
@@ -98,17 +133,14 @@ const ShowtimeSchedule = ({ movieId }) => {
       </h3>
 
       {/* Danh sách phòng chiếu */}
-      {showtimeDetail.length > 0 ? (
+      {Object.entries(groupedShowtimes).length > 0 ? (
         <Collapse className="cinema-list" accordion>
-          {showtimeDetail.map((showtime) => (
-            <Panel
-              header={<span className="cinema-title">{showtime.title}</span>}
-              key={showtime.showtimeId}
-              className="cinema-panel"
-            >
-              <p className="cinema-address">{showtime.roomName}</p>
+          {Object.entries(groupedShowtimes).map(([roomId, { roomName, showtimes }]) => (
+            <Panel header={<span className="cinema-title">{roomName}</span>} key={roomId} className="cinema-panel">
               <div className="showtime-buttons">
-                <Tag className="showtime">{showtime.startTime}</Tag>
+                {showtimes.map((time, index) => (
+                  <Tag className="showtime" key={index}>{time}</Tag>
+                ))}
               </div>
             </Panel>
           ))}

@@ -29,7 +29,8 @@ const ShowTimeService = {
     async GetDetailShowTime(id) {
         try {
             const res = await api.get(`${API_ENDPOINTS.GET_BY_ID_SHOWTIME}/${id}`);
-            return res.data ? res.data : null
+            console.log("data show time :" ,res.data);
+            return res.data ? res.data : null;
         } catch (error) {
             console.log("Failed to fetch showtimes", error);
             return [];

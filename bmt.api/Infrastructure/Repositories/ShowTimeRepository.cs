@@ -140,14 +140,37 @@ namespace Core.Infrastructure.Repositories
             var toDate = DateOnly.FromDateTime(req.ToDate);
             var ShowTimes = await query
                 .Where(s => !s.IsDeleted
-                    || s.MovieId == req.MovieId
-                    || s.RoomId == req.RoomId
+                    && (!req.MovieId.HasValue || s.MovieId == req.MovieId)
+                    && (!req.RoomId.HasValue || s.RoomId == req.RoomId)
                     && DateOnly.FromDateTime((DateTime)s.StartTime) >= fromDate
                     && DateOnly.FromDateTime((DateTime)s.StartTime) <= toDate)
                 .OrderBy(s => s.CreatedDate)
                 .Skip((pageIndex - 1) * req.PageSize)
                 .Take(req.PageSize)
+                .Include(s => s.Movie)  
+                .Include(s => s.Room)   
+                .Select(s => new ShowTimeRes
+                {
+                    ShowtimeId = s.ShowtimeId,
+                    MovieId = s.MovieId,
+                    RoomId = s.RoomId,
+                    StartTime = s.StartTime,
+                    EndTime = s.EndTime,
+                    Price = s.Price,
+                    Title = s.Movie.Title,
+                    Director = s.Movie.Director,
+                    Performer = s.Movie.Performer,
+                    Language = s.Movie.Language,
+                    Genre = s.Movie.Genre,
+                    Duration = s.Movie.Duration ?? 0,
+                    ReleaseDate = s.Movie.ReleaseDate.Value.ToDateTime(TimeOnly.MinValue),
+                    PosterUrl = s.Movie.PosterUrl,
+                    TrailerUrl = s.Movie.TrailerUrl,
+                    AgeRating = s.Movie.AgeRating,
+                    RoomName = s.Room.RoomName
+                })
                 .ToListAsync();
+
 
             if (!ShowTimes.Any())
             {

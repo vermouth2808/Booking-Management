@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  core.api:
+    image: ${DOCKER_REGISTRY-}coreapi
+    build:
+      context: .
+      dockerfile: WebAPI/Dockerfile
+    depends_on:
+      - redis
+    environment:
+      - Redis__ConnectionString=redis:6379
+
+  redis:
+    image: redis:latest
+    container_name: redis_container
+    restart: always
+    ports:
+      - "6379:6379"
+    command: redis-server --save 60 1 --loglevel warning
+    volumes:
+      - redis_data:/data
+
+volumes:
+  redis_data:
+    driver: local

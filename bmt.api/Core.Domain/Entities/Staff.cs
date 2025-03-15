@@ -21,8 +21,6 @@ public partial class Staff
 
     public string? Description { get; set; }
 
-    public bool IsActived { get; set; }
-
     public DateTime CreatedDate { get; set; }
 
     public int CreatedUserId { get; set; }

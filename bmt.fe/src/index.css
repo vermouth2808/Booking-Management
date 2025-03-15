@@ -1,0 +1,327 @@
+/* ======================== */
+/* 🌟 Light & Dark Mode     */
+/* ======================== */
+:root {
+  --primary: #007AFF;
+  --bg: #F5F5F5;
+  --card-bg: #FFFFFF;
+  --header:#F5F5F5;
+  --text-primary: #222;
+  --text-secondary: #555;
+  --border: #DDDDDD;
+  --text-font-family: Verdana, Arial, sans-serif;
+  --transition: all 0.3s ease-in-out;
+  --card-box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.273);
+}
+
+.dark {
+  --primary: #0A84FF;
+  --bg: #0c1532;
+  --header:#192653;
+  --card-bg: #1E1E1E;
+  --text-primary: #EAEAEA;
+  --text-secondary: #B0B0B0;
+  --border: #333;
+  --card-box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.314);
+
+}
+
+/* ======================== */
+/* 🎨 Layout               */
+/* ======================== */
+.layout {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+/* ======================== */
+/* 🎬 Header               */
+/* ======================== */
+.layout-wrapper {
+ /* width: 1400px; /* Hoặc 100% tuỳ theo thiết kế */
+  margin: 0 auto; /* Canh giữa */
+  position: relative; /* Để header có thể bám theo */
+}
+
+.header-app {
+  position: fixed; /* Hoặc absolute nếu muốn nó nằm trong cha */
+  width: 100%; /* Đảm bảo header full width */
+  left: 50%;
+  transform: translateX(-50%); /* Căn giữa */
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 40px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--text-font-family);
+  background: var(--header);
+  transition: var(--transition);
+}
+
+
+.main-layout{
+  padding-top: 90px; 
+}
+.header-title span {
+  margin-left: 20px;
+  font-size: 22px;
+  font-weight: bold;
+  font-family: var(--text-font-family);
+  color: #ff3377;
+}
+.header-switch{
+  margin-right: 20px;
+}
+.title {
+  font-size: 22px;
+  text-align: center;
+  font-weight: bold;
+  font-family: var(--text-font-family);
+  color: var(--text-primary);
+}
+
+.dropdown span {
+  font-size: 14px;
+  font-weight: bold;
+  font-family: var(--text-font-family);
+  color: var(--text-primary);
+}
+
+/* ======================== */
+/* 🎭 Movie List           */
+/* ======================== */
+.movie-list {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 20px;
+  padding: 10px 0;
+}
+
+/* 🎬 Movie Card */
+.movie-card {
+  position: relative;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: var(--card-bg);
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 10px auto;
+  text-align: center;
+  border: 1px solid var(--border);
+  transition: transform 0.3s, var(--transition);
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+  box-shadow: var(--card-box-shadow);
+}
+
+/* 🎥 Movie Image */
+.movie-image {
+  position: relative;
+  width: 100%;
+  height: 350px;
+  cursor: pointer;
+}
+
+.movie-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* 🎭 Movie Info */
+.movie-info {
+  text-align: left;
+  padding: 10px;
+  font-family: var(--text-font-family);
+}
+
+.movie-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-primary);
+  font-family: var(--text-font-family);
+}
+
+.movie-rank {
+  font-size: 12px;
+  font-weight: 200;
+  color: var(--text-primary);
+  font-family: var(--text-font-family);
+}
+
+.movie-description {
+  display: -webkit-box;
+  font-size: 12px;
+  -webkit-line-clamp: 2;
+  /* Giới hạn tối đa 2 dòng */
+  line-clamp: 2;
+  /* Thêm thuộc tính chuẩn để tránh cảnh báo */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-family: var(--text-font-family);
+  color: var(--text-primary);
+  text-overflow: ellipsis;
+}
+
+.movie-description.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.movie-genre {
+  font-size: 14px;
+  color: var(--text-secondary);
+  font-family: var(--text-font-family);
+}
+
+.movie-rating {
+  font-size: 14px;
+  color: gold;
+}
+
+.movie-carousel {
+  width: 100%;
+  padding: 20px;
+}
+
+/* ======================== */
+/* 🎬 Footer               */
+/* ======================== */
+.footer-app {
+  text-align: center;
+  padding: 15px;
+  font-size: 14px;
+  border-top: 1px solid var(--border);
+  background: var(--header);
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+
+/* ======================== */
+/* 🎭 Login Form           */
+/* ======================== */
+.login-form {
+  margin: 120px auto;
+  max-width: 300px;
+  background: rgba(60, 58, 58, 0.8);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.8),
+    0 0 30px rgba(255, 255, 255, 0.6),
+    0 0 45px rgba(0, 83, 255, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+.login-background {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 100vh;
+}
+
+.login-background::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  z-index: 1;
+}
+
+/* ======================== */
+/* 🌗 Switch Button       */
+/* ======================== */
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.switch-icon {
+  font-size: 20px;
+  color: var(--text-primary);
+  transition: var(--transition);
+}
+
+/* ======================== */
+/* 🛠 Utility Classes      */
+/* ======================== */
+.no-movies {
+  text-align: center;
+  font-size: 16px;
+  color: var(--text-secondary);
+}
+
+.cl-w {
+  color: #fff;
+}
+
+.btn-see-more {
+  color: blue;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.footer {
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 40px 20px;
+}
+
+.footer-title {
+  color: #ff3377;
+  border-bottom: 2px solid #ff3377;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-social {
+  text-align: center;
+  font-size: 24px;
+}
+
+.footer-social-icon {
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  border-top: 1px solid #444;
+  padding-top: 10px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-link {
+  color: #ff3377;
+  text-decoration: none;
+}
+
+.footer-link:hover {
+  text-decoration: underline;
+}

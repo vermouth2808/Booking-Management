@@ -1,10 +1,19 @@
-﻿namespace Core.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Core.Domain.Entities;
 
 public partial class Movie
 {
     public int MovieId { get; set; }
 
     public string Title { get; set; } = null!;
+
+    public string? Director { get; set; }
+
+    public string? Performer { get; set; }
+
+    public string? Language { get; set; }
 
     /// <summary>
     /// thể loại
@@ -25,6 +34,8 @@ public partial class Movie
 
     public string? TrailerUrl { get; set; }
 
+    public string? AgeRating { get; set; }
+
     public string? Description { get; set; }
 
     public DateTime CreatedDate { get; set; }
@@ -36,4 +47,5 @@ public partial class Movie
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
+    public ICollection<Showtime> Showtimes { get; set; }
 }

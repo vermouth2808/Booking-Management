@@ -1,0 +1,98 @@
+/* Tổng container chứa toàn bộ ghế */
+.seat-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  background-color: #222;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Màn hình hiển thị */
+.screen {
+  width: 80%;
+  text-align: center;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #ddd;
+  color: black;
+  border-radius: 5px;
+}
+
+/* Container chứa ghế */
+.seat-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Hàng ghế */
+.seat-row {
+  display: flex;
+  gap: 6px;
+}
+
+/* Ghế */
+.seat-btn {
+  width: 40px;
+  height: 40px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Ghế khi hover */
+.seat-btn:hover {
+  background-color: #45a049;
+}
+
+/* Ghế đã chọn */
+.seat-btn.selected {
+  background-color: #FF5733;
+}
+
+/* Ghế đã đặt */
+.seat-btn.booked {
+  background-color: #B0B0B0;
+  cursor: not-allowed;
+}
+
+/* Ghế VIP */
+.seat-btn.vip {
+  background-color: gold;
+  color: black;
+  font-weight: bold;
+}
+
+/* Ghế trống (lối đi) */
+.seat-empty {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+}
+
+/* Chú thích màu ghế */
+.seat-legend {
+  display: flex;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+}
+
+.legend-item .seat-btn {
+  width: 30px;
+  height: 30px;
+}

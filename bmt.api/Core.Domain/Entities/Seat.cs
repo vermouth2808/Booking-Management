@@ -7,7 +7,7 @@ public partial class Seat
 {
     public int SeatId { get; set; }
 
-    public string? Room { get; set; }
+    public int RoomId { get; set; }
 
     /// <summary>
     /// Số ghế (ví dụ: A1, A2)

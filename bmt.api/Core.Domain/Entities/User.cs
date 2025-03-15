@@ -13,6 +13,8 @@ public partial class User
 
     public string PassWord { get; set; } = null!;
 
+    public int RoleId { get; set; }
+
     public bool IsOnline { get; set; }
 
     public bool IsActive { get; set; }

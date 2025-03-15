@@ -17,6 +17,8 @@ const API_ENDPOINTS = {
     SEARCH_SHOWTIME : `${API_BASE_URL}/ShowTimes/SearchShowTime`,
     GET_BY_ID_SHOWTIME : `${API_BASE_URL}/ShowTimes/GetById`,
 
+    ///////ROOM///////////
+    GET_BY_ID_ROOM : `${API_BASE_URL}/Rooms/GetById`,
 };
 
 export default API_ENDPOINTS;

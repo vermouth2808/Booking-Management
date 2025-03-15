@@ -252,18 +252,15 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.StartTime).HasColumnType("datetime");
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+            modelBuilder.Entity<Showtime>()
+                .HasOne(s => s.Movie)
+                .WithMany(m => m.Showtimes)
+                .HasForeignKey(s => s.MovieId);
 
-            // Thiết lập quan hệ với Movie
-            entity.HasOne(s => s.Movie)
-                  .WithMany(m => m.Showtimes)
-                  .HasForeignKey(s => s.MovieId)
-                  .OnDelete(DeleteBehavior.Cascade);
-
-            // Thiết lập quan hệ với Room
-            entity.HasOne(s => s.Room)
-                  .WithMany(r => r.Showtimes)
-                  .HasForeignKey(s => s.RoomId)
-                  .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Showtime>()
+                .HasOne(s => s.Room)
+                .WithMany(r => r.Showtimes)
+                .HasForeignKey(s => s.RoomId);
         });
 
         modelBuilder.Entity<Staff>(entity =>

@@ -3,6 +3,7 @@ import { Collapse, Tag, Button } from "antd";
 import { useSelector } from "react-redux";
 import ShowTimeService from "../../services/ShowTimeService";
 import "./ShowtimeSchedule.css";
+import Seat from "../Seat/Seat"
 
 const { Panel } = Collapse;
 
@@ -12,7 +13,8 @@ const ShowtimeSchedule = ({ movieId }) => {
   const [listRoom, setListRoom] = useState([]);
   const [groupedShowtimes, setGroupedShowtimes] = useState({}); // Thêm state cho groupedShowtimes
   const [selectedShowtimeDate, setSelectedShowtimeDate] = useState(null);
-
+  const [selectedRoomId, setSelectedRoomId] = useState(null);
+  
 
   useEffect(() => {
     if (showtimes.length > 0) {
@@ -20,6 +22,7 @@ const ShowtimeSchedule = ({ movieId }) => {
       setSelectedShowtimeDate(sortedShowtimes[0].startTime); // Chọn ngày nhỏ nhất
     }
   }, [showtimes]);
+
 
 
   useEffect(() => {
@@ -30,7 +33,7 @@ const ShowtimeSchedule = ({ movieId }) => {
           keySearch: "",
           pageSize: 10,
           pageIndex: 1,
-          fromDate: new Date(now.getFullYear(), now.getMonth(), 1).toISOString(),
+          fromDate: new Date(),
           toDate: new Date(now.getFullYear(), now.getMonth() + 1, 0).toISOString(),
           movieId: parseInt(movieId, 10),
           roomId: null,
@@ -79,8 +82,8 @@ const ShowtimeSchedule = ({ movieId }) => {
       return acc;
     }, {});
 
-    setGroupedShowtimes(grouped); // Cập nhật state groupedShowtimes
-  }, [listRoom]); // Chạy lại khi listRoom thay đổi
+    setGroupedShowtimes(grouped); 
+  }, [listRoom]); 
 
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
@@ -112,7 +115,9 @@ const ShowtimeSchedule = ({ movieId }) => {
                   size="large"
                   key={showtimeItem.showtimeId}
                   className={`date-btn ${selectedShowtimeDate === showtimeItem.startTime ? "active" : ""}`}
-                  onClick={() => setSelectedShowtimeDate(showtimeItem.startTime)}
+                  onClick={() =>
+                    setSelectedShowtimeDate(showtimeItem.startTime)
+                  }
                 >
                   <span>
                     {formattedDate}
@@ -136,10 +141,18 @@ const ShowtimeSchedule = ({ movieId }) => {
       {Object.entries(groupedShowtimes).length > 0 ? (
         <Collapse className="cinema-list" accordion>
           {Object.entries(groupedShowtimes).map(([roomId, { roomName, showtimes }]) => (
-            <Panel header={<span className="cinema-title">{roomName}</span>} key={roomId} className="cinema-panel">
+            <Panel header={
+              <span className="cinema-title">
+                {roomName}
+              </span>}
+              key={roomId} className="cinema-panel">
               <div className="showtime-buttons">
                 {showtimes.map((time, index) => (
-                  <Tag className="showtime" key={index}>{time}</Tag>
+                  <Tag
+                    onClick={() => setSelectedRoomId(roomId)}
+                    className="showtime" key={index}>
+                    {time}
+                  </Tag>
                 ))}
               </div>
             </Panel>
@@ -148,6 +161,10 @@ const ShowtimeSchedule = ({ movieId }) => {
       ) : (
         <p>Vui lòng chọn ngày chiếu phim.</p>
       )}
+
+
+      {/*sơ đồ ghế trong phòng*/}
+    <Seat RoomId={selectedRoomId}/>
     </div>
   );
 };

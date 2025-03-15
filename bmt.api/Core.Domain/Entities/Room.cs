@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Core.Domain.Entities;
+﻿namespace Core.Domain.Entities;
 
 public partial class Room
 {
     public int RoomId { get; set; }
 
     public string RoomName { get; set; } = null!;
+
+    public string? Layout { get; set; }
 
     public string? Description { get; set; }
 
@@ -20,5 +19,5 @@ public partial class Room
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
-    public virtual ICollection<Showtime> Showtimes { get; set; } = new List<Showtime>();
+    public ICollection<Showtime> Showtimes { get; set; }
 }

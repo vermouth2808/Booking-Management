@@ -1,4 +1,7 @@
-﻿namespace Core.Domain.Entities;
+﻿using System;
+using System.Collections.Generic;
+
+namespace Core.Domain.Entities;
 
 public partial class Showtime
 {
@@ -23,7 +26,6 @@ public partial class Showtime
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
-    public virtual Movie Movie { get; set; } = null!;
-    public virtual Room Room { get; set; } = null!;
+    public Room Room { get; set; }
+    public Movie Movie { get; set; }
 }
-

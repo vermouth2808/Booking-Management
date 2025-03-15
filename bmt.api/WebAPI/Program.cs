@@ -15,6 +15,7 @@ using Core.Shared.DTOs.Response.ShowTime;
 using Core.Shared.DTOs.Response.Banner;
 using Core.Shared.DTOs.Response.Category;
 using Core.Application.Mapper;
+using Core.Shared.DTOs.Response.Room;
 
 internal class Program
 {
@@ -94,6 +95,9 @@ internal class Program
 
         builder.Services.AddScoped<IShowTimeService<ShowTimeRes>, ShowTimeService<ShowTimeRes>>();
         builder.Services.AddScoped<IShowTimeRepository<ShowTimeRes>, ShowTimeRepository<ShowTimeRes>>();
+         
+        builder.Services.AddScoped<IRoomService<RoomRes>, RoomService<RoomRes>>();
+        builder.Services.AddScoped<IRoomRepository<RoomRes>, RoomRepository<RoomRes>>();
 
         builder.Services.AddScoped<IUserValidator, UserValidator>();
         builder.Services.AddScoped<IAuthService, AuthService>();

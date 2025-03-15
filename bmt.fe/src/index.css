@@ -173,6 +173,14 @@
   text-overflow: ellipsis;
 }
 
+.movie-description.expanded {
+  display: block;
+  -webkit-line-clamp: unset;
+  line-clamp: unset;
+  -webkit-box-orient: unset;
+  overflow: visible;
+  text-overflow: unset;
+}
 
 .movie-genre {
   font-size: 14px;

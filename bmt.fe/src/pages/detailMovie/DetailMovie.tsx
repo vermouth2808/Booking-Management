@@ -169,7 +169,7 @@ const DetailMovie: React.FC = () => {
         <p className="no-movie">Không có phim nào để hiển thị.</p>
       )}
       <ShowtimeSchedule movieId={parseInt(id!)} />
-      <TotalMovieTicketPrice />
+      {/* <TotalMovieTicketPrice /> */}
     </div>
   );
 };

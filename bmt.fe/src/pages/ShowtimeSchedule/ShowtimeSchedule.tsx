@@ -106,65 +106,92 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
 
       {showtimes.length > 0 ? (
         <div className="date-picker">
-          {Array.from(new Set(showtimes.map((s) => new Date(s.startTime)))).slice(0,7).map(
-            (date) => (
-              <Button
-                key={date.toISOString()}
-                size="large"
-                className={`date-btn ${
-                  selectedShowtimeDate === date ? "active" : ""
-                }`}
-                onClick={() => setSelectedShowtimeDate(date)}
-              >
-                <span>
-                  {date.toLocaleDateString("vi-VN", {
-                    day: "2-digit",
-                    month: "2-digit",
-                  })}
-                  <br />
-                  {date.toLocaleDateString("vi-VN", { weekday: "long" })}
-                </span>
-              </Button>
-            )
-          )}
+          {(() => {
+            const uniqueDates = new Map();
+            const filteredShowtimes = showtimes.filter((showtimeItem) => {
+              const startTime = showtimeItem.startTime;
+              const formattedDate = new Date(startTime).toLocaleDateString(
+                "vi-VN"
+              );
+
+              if (uniqueDates.has(formattedDate)) {
+                return false;
+              }
+
+              uniqueDates.set(formattedDate, showtimeItem.showtimeId);
+              return true;
+            });
+
+            return filteredShowtimes.slice(0, 7).map((showtimeItem) => {
+              const startTime = showtimeItem.startTime;
+              const dateObj = new Date(startTime);
+              const formattedDate = dateObj.toLocaleDateString("vi-VN", {
+                day: "2-digit",
+                month: "2-digit",
+              });
+              const dayOfWeek = dateObj.toLocaleDateString("vi-VN", {
+                weekday: "long",
+              });
+
+              return (
+                <Button
+                  size="large"
+                  key={showtimeItem.showtimeId}
+                  className={`date-btn ${
+                    selectedShowtimeDate === startTime ? "active" : ""
+                  }`}
+                  onClick={() => setSelectedShowtimeDate(startTime)}
+                >
+                  <span>
+                    {formattedDate}
+                    <br />
+                    {dayOfWeek}
+                  </span>
+                </Button>
+              );
+            });
+          })()}
         </div>
       ) : (
         <p className="no-movie">Chưa có lịch chiếu.</p>
       )}
+      {groupedShowtimes && (
+        <>
+          <h3 className="subtitle">
+            <span className="movie-title">DANH SÁCH PHÒNG</span>
+          </h3>
 
-      <h3 className="subtitle">
-        <span className="movie-title">DANH SÁCH PHÒNG</span>
-      </h3>
-
-      {Object.keys(groupedShowtimes).length > 0 ? (
-        <Collapse className="cinema-list" accordion>
-          {Object.entries(groupedShowtimes).map(
-            ([roomId, { roomName, showtimes }]) => (
-              <Panel
-                header={<span className="cinema-title">{roomName}</span>}
-                key={roomId}
-                className="cinema-panel"
-              >
-                <div className="showtime-buttons">
-                  {showtimes.map((time: string, index: number) => (
-                    <Tag
-                      key={index}
-                      onClick={() => setSelectedRoomId(Number(roomId))}
-                      className="showtime"
-                    >
-                      {time}
-                    </Tag>
-                  ))}
-                </div>
-              </Panel>
-            )
+          {Object.keys(groupedShowtimes).length > 0 ? (
+            <Collapse className="cinema-list" accordion>
+              {Object.entries(groupedShowtimes).map(
+                ([roomId, { roomName, showtimes }]) => (
+                  <Panel
+                    header={<span className="cinema-title">{roomName}</span>}
+                    key={roomId}
+                    className="cinema-panel"
+                  >
+                    <div className="showtime-buttons">
+                      {showtimes.map((time: string, index: number) => (
+                        <Tag
+                          key={index}
+                          onClick={() => setSelectedRoomId(Number(roomId))}
+                          className="showtime"
+                        >
+                          {time}
+                        </Tag>
+                      ))}
+                    </div>
+                  </Panel>
+                )
+              )}
+            </Collapse>
+          ) : (
+            <p>Vui lòng chọn ngày chiếu phim.</p>
           )}
-        </Collapse>
-      ) : (
-        <p>Vui lòng chọn ngày chiếu phim.</p>
+        </>
       )}
 
-      <Seat RoomId={selectedRoomId} />
+      {selectedRoomId ? <Seat RoomId={selectedRoomId} /> : null}
     </div>
   );
 };

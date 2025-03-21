@@ -3,14 +3,17 @@ import { Dropdown, Space, Switch, Typography } from "antd";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleDarkMode } from "../../store/themeSlice";
+import { RootState } from "../../store";
 import Category from "../../services/CategoryService";
-
+import { Link } from "react-router-dom";
+import { CategoryModelRes } from "../../models/CategoryModelRes";
 
 const { Title } = Typography;
 const Header = () => {
-  const [categorories, setCategories] = useState([]);
+    
+  const [categorories, setCategories] = useState<CategoryModelRes[]>([]);
   const dispatch = useDispatch();
-  const darkMode = useSelector((state) => state.theme.darkMode);
+  const darkMode = useSelector((state:RootState ) => state.theme.darkMode);
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -25,13 +28,13 @@ const Header = () => {
     fetchCategories();
   }, []);
 
-  const items = categorories.map((category) => ({
+  const items = categorories?.map((category) => ({
     key: category.categoryId,
     label: category.categoryName
   }));
   return (
     <header className={`header-app ${darkMode ? "dark" : "light"}`}>
-      <Title level={3} className="header-title"><span>TA-Cinema</span></Title>
+      <Link to={`/home`}  className="header-title"><Title level={3}><span >TA-Cinema</span></Title></Link>
       <Dropdown menu={{ items }}>
         <a>
           <Space className="dropdown">

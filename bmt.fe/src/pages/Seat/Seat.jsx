@@ -1,10 +1,22 @@
 import React, { useEffect, useState } from "react";
-import "../Seat/Seat.css";
+import "./Seat.css";
 import { Button } from "antd";
 import RoomService from "../../services/RoomService";
 
 const Seat = ({ RoomId }) => {
     const [roomDetail, setRoomDetail] = useState(null);
+    const [listSeat, setListSeat] = useState([]);
+
+     useEffect(() => {
+      onSelectSeat(listSeat);
+    }, [listSeat, onSelectSeat]);
+
+    const handleSelectSeat = (seat) => {
+        setListSeat((prev) =>
+          prev.includes(seat) ? prev.filter((s) => s !== seat) : [...prev, seat]
+        );
+    };
+
 
     useEffect(() => {
         const fetchGetDetailRoom = async () => {
@@ -34,7 +46,8 @@ const Seat = ({ RoomId }) => {
                         <div key={rowIndex} className="seat-row">
                             {row.map((seat, colIndex) =>
                                 seat ? (
-                                    <Button key={seat} className="seat-btn">
+                                    <Button key={seat} className={`seat-btn ${listSeat.includes(seat) ? "selected" : ""}`}
+                                        onClick={() => handleSelectSeat(seat)}>
                                         {seat}
                                     </Button>
                                 ) : (
@@ -68,6 +81,7 @@ const Seat = ({ RoomId }) => {
                 </div>
             </div>
         </div>
+
     );
 };
 

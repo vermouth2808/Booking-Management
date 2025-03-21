@@ -1,9 +1,8 @@
-import React from "react";
+import React, { FC } from "react";
 import Footer from "./Footer";
 import Header from "./Header";
 
-
-const MainLayout = ({ children }) => {
+const MainLayout: FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="layout-wrapper">
       <Header />
@@ -12,7 +11,5 @@ const MainLayout = ({ children }) => {
     </div>
   );
 };
-
-
 
 export default MainLayout;

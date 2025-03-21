@@ -60,7 +60,7 @@ const DetailMovie: React.FC = () => {
           {/* Thông Tin Phim */}
           <div className="movie-info">
             <Title level={2}>
-              <span className="movie-title">{movie.title}</span>
+              <span className="title">{movie.title}</span>
             </Title>
             <div className="movie-age">
               <Tag icon={<StarOutlined />} color="gold">
@@ -114,7 +114,7 @@ const DetailMovie: React.FC = () => {
             )}
             <div className="movie-age">
               <Title level={4}>
-                <span className={`movie-title ${darkMode ? "dark" : "light"}`}>
+                <span className="movie-title">
                   MÔ TẢ
                 </span>
               </Title>
@@ -127,7 +127,7 @@ const DetailMovie: React.FC = () => {
 
             {/* Nội dung phim */}
             <Title level={4}>
-              <span className={`movie-title ${darkMode ? "dark" : "light"}`}>
+              <span className="movie-title">
                 NỘI DUNG PHIM
               </span>
             </Title>
@@ -169,7 +169,7 @@ const DetailMovie: React.FC = () => {
         <p className="no-movie">Không có phim nào để hiển thị.</p>
       )}
       <ShowtimeSchedule movieId={parseInt(id!)} />
-      {selectedSeats.length > 0 && <TotalMovieTicketPrice />}
+      <TotalMovieTicketPrice />
     </div>
   );
 };

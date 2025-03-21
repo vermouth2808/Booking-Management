@@ -30,7 +30,7 @@ const ShowTimeService = {
             roomId: null,
           };
           const res = await api.post(API_ENDPOINTS.SEARCH_SHOWTIME, payload);
-          return res.data;
+          return res.data.showTimes;
         } catch (error) {
             console.log("Failed to fetch showtimes", error);
         }

@@ -7,9 +7,9 @@ const Seat = ({ RoomId }) => {
     const [roomDetail, setRoomDetail] = useState(null);
     const [listSeat, setListSeat] = useState([]);
 
-     useEffect(() => {
-      onSelectSeat(listSeat);
-    }, [listSeat, onSelectSeat]);
+    //  useEffect(() => {
+    //   onSelectSeat(listSeat);
+    // }, [listSeat, onSelectSeat]);
 
     const handleSelectSeat = (seat) => {
         setListSeat((prev) =>

@@ -143,6 +143,7 @@
   text-align: left;
   padding: 10px;
   font-family: var(--text-font-family);
+  color: var(--text-primary);
 }
 
 .movie-title {

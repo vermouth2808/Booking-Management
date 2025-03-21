@@ -1,19 +1,13 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import { Collapse, Tag, Button } from "antd";
 import { useSelector } from "react-redux";
 import ShowTimeService from "../../services/ShowTimeService";
 import "./ShowtimeSchedule.css";
 import Seat from "../Seat/Seat";
-import { RootState } from "../../store";
 import { ShowTime } from "../../models/ShowTimeSearchModelRes";
 import { SearchShowTimeModelReq } from "../../models/SearchShowTimeModelReq";
 
 const { Panel } = Collapse;
-
-interface ShowtimeScheduleProps {
-  movieId: number;
-  onSeatSelect: (seats: string[]) => void;
-}
 
 interface GroupedShowtimes {
   [roomId: number]: {
@@ -22,117 +16,125 @@ interface GroupedShowtimes {
   };
 }
 
-const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId, onSeatSelect }) => {
-  const darkMode = useSelector((state: RootState) => state.theme.darkMode);
+interface ShowtimeScheduleProps {
+  movieId: number;
+}
+
+const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
+  const darkMode = useSelector((state: any) => state.theme.darkMode);
   const [showtimes, setShowtimes] = useState<ShowTime[]>([]);
   const [listRoom, setListRoom] = useState<ShowTime[]>([]);
   const [groupedShowtimes, setGroupedShowtimes] = useState<GroupedShowtimes>({});
-  const [selectedShowtimeDate, setSelectedShowtimeDate] = useState<Date>(new Date());
+  const [selectedShowtimeDate, setSelectedShowtimeDate] = useState<Date>();
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
-  const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
-  const handleSeatSelection = (seats: string[]) => {
-    setSelectedSeats(seats);
-    onSeatSelect(seats); // Truyền lên DetailMovie
-  };
-
-  const fetchShowTime = useCallback(async (fromDate: Date, toDate: Date) => {
-    try {
-      const params: SearchShowTimeModelReq = {
-        keySearch: "",
-        pageSize: 10,
-        pageIndex: 1,
-        fromDate: selectedShowtimeDate,
-        toDate: selectedShowtimeDate,
-        movieId,
-        roomId: undefined,
-      };
-      const showtime: ShowTime[] = (await ShowTimeService.SearchShowTime(params)) ?? [];
-      return Array.isArray(showtime) ? showtime : [];
-    } catch (error) {
-      console.error("⚠️ Load showtimes failed", error);
-      return [];
+  useEffect(() => {
+    if (showtimes.length > 0) {
+      const sortedShowtimes = [...showtimes].sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+      setSelectedShowtimeDate(sortedShowtimes[0].startTime);
     }
-  }, [movieId, selectedShowtimeDate]);
+  }, [showtimes]);
 
   useEffect(() => {
-    const loadInitialShowTimes = async () => {
-      const now = new Date();
-      const fetchedShowtimes = await fetchShowTime(now, new Date(now.getFullYear(), now.getMonth() + 1, 0));
-      setShowtimes(Array.isArray(fetchedShowtimes) ? fetchedShowtimes : []);
+    const fetchShowTime = async () => {
+      try {
+        const now = new Date();
+        const params : SearchShowTimeModelReq = {
+          keySearch: "",
+          pageSize: 10,
+          pageIndex: 1,
+          fromDate: new Date(),
+          toDate: new Date(now.getFullYear(), now.getMonth() + 1, 0),
+          movieId: movieId,
+          roomId: undefined,
+        };
+        const showtime: ShowTime[] | undefined = await ShowTimeService.SearchShowTime(params);
+        setShowtimes(Array.isArray(showtime) ? showtime : []);
+      } catch (error) {
+        console.log("Load showtimes failed", error);
+      }
     };
-    loadInitialShowTimes();
-  }, [fetchShowTime]);
+    fetchShowTime();
+  }, [movieId]);
 
   useEffect(() => {
-    const loadRoomsForDate = async () => {
-      if (!selectedShowtimeDate) return;
-      const fetchedRooms = await fetchShowTime(selectedShowtimeDate, selectedShowtimeDate);
-      setListRoom(Array.isArray(fetchedRooms) ? fetchedRooms : []);
+    const fetchShowTime = async () => {
+      try {
+        if (!selectedShowtimeDate) return;
+        const params : SearchShowTimeModelReq = {
+          keySearch: "",
+          pageSize: 10,
+          pageIndex: 1,
+          fromDate: selectedShowtimeDate,
+          toDate: selectedShowtimeDate,
+          movieId: movieId, 
+          roomId: undefined,
+        };
+        const showtime: ShowTime[]| undefined = await ShowTimeService.SearchShowTime(params);
+        setListRoom(Array.isArray(showtime) ? showtime : []);
+      } catch (error) {
+        console.log("Load showtimes failed", error);
+      }
     };
-    loadRoomsForDate();
-  }, [selectedShowtimeDate, fetchShowTime]);
+    fetchShowTime();
+  }, [selectedShowtimeDate]);
+
 
   useEffect(() => {
-    if (!Array.isArray(listRoom)) {
-      console.error("", listRoom);
-      return;
-    }
-
     const grouped = listRoom.reduce<GroupedShowtimes>((acc, showtime) => {
-      if (!showtime.roomId || !showtime.roomName) return acc;
       if (!acc[showtime.roomId]) {
         acc[showtime.roomId] = {
           roomName: showtime.roomName,
           showtimes: [],
         };
       }
-      acc[showtime.roomId].showtimes.push(
-        new Date(showtime.startTime ?? "").toISOString().split("T")[1].slice(0, 5)
-      );
+      const date = new Date(showtime.startTime).toISOString();
+      const timePart = date.includes("T")
+        ? date.split("T")[1]?.slice(0, 5)
+        : "00:00";
+      acc[showtime.roomId].showtimes.push(timePart);
       return acc;
     }, {});
-
     setGroupedShowtimes(grouped);
   }, [listRoom]);
 
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
-      <h2 className="title">LỊCH CHIẾU</h2>
+      <h2 className="title">
+        <span className="movie-title">LỊCH CHIẾU</span>
+      </h2>
 
       {showtimes.length > 0 ? (
         <div className="date-picker">
-          {showtimes.map((showtimeItem) => {
-            const dateObj = new Date(showtimeItem.startTime);
-            const formattedDate = dateObj.toLocaleDateString("vi-VN");
-            const dayOfWeek = dateObj.toLocaleDateString("vi-VN", {
-              weekday: "long",
-            });
-            return (
+          {Array.from(new Set(showtimes.map((s) => new Date(s.startTime)))).slice(0,7).map(
+            (date) => (
               <Button
+                key={date.toISOString()}
                 size="large"
-                key={showtimeItem.showtimeId}
                 className={`date-btn ${
-                  selectedShowtimeDate.getTime() === dateObj.getTime()
-                    ? "active"
-                    : ""
+                  selectedShowtimeDate === date ? "active" : ""
                 }`}
-                onClick={() => setSelectedShowtimeDate(dateObj)}
+                onClick={() => setSelectedShowtimeDate(date)}
               >
                 <span>
-                  {formattedDate}
+                  {date.toLocaleDateString("vi-VN", {
+                    day: "2-digit",
+                    month: "2-digit",
+                  })}
                   <br />
-                  {dayOfWeek}
+                  {date.toLocaleDateString("vi-VN", { weekday: "long" })}
                 </span>
               </Button>
-            );
-          })}
+            )
+          )}
         </div>
       ) : (
         <p className="no-movie">Chưa có lịch chiếu.</p>
       )}
 
-      <h3 className="subtitle">DANH SÁCH PHÒNG</h3>
+      <h3 className="subtitle">
+        <span className="movie-title">DANH SÁCH PHÒNG</span>
+      </h3>
 
       {Object.keys(groupedShowtimes).length > 0 ? (
         <Collapse className="cinema-list" accordion>
@@ -144,11 +146,11 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId, onSeatSele
                 className="cinema-panel"
               >
                 <div className="showtime-buttons">
-                  {showtimes.map((time : string, index : number) => (
+                  {showtimes.map((time: string, index: number) => (
                     <Tag
+                      key={index}
                       onClick={() => setSelectedRoomId(Number(roomId))}
                       className="showtime"
-                      key={index}
                     >
                       {time}
                     </Tag>

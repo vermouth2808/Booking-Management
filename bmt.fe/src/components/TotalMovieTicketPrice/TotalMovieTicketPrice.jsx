@@ -3,7 +3,6 @@ import { Card, Button, Typography, Row, Col } from "antd";
 import "./TotalMovieTicketPrice.css";
 
 const { Title, Text } = Typography;
-
 const TotalMovieTicketPrice = () => {
   return (
     <Card className="TotalMovieTicketPrice">

@@ -18,7 +18,6 @@ const Header = () => {
     const fetchCategories = async () => {
       try {
         const categorories = await Category.getAllCategory();
-        console.log("API response:", categorories);
         setCategories(Array.isArray(categorories) ? categorories : []);
       } catch (error) {
         console.error("Error fetching category:", error)

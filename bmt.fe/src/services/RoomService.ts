@@ -2,7 +2,7 @@ import api from "../api/api";
 import API_ENDPOINTS from "../config/Config";
 
 const RoomService = {
-    async getDetailRoom(RoomId:number) {
+    async getDetailRoom(RoomId:number|null) {
         try {
             const res = await api.get(`${API_ENDPOINTS.GET_BY_ID_ROOM}/${RoomId}`);
             return res.data ? res.data : null;

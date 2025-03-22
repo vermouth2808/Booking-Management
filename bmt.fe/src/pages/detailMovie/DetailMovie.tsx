@@ -29,6 +29,11 @@ const DetailMovie: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [selectedSeats, setSelectedSeats] = useState<string[]>([]);
 
+
+  const listSeats = (listSeat: string[]) => {
+    console.log("check detail movie :", listSeat);
+    setSelectedSeats(listSeat);
+  };
   useEffect(() => {
     const fetchMovieDetail = async () => {
       try {
@@ -114,9 +119,7 @@ const DetailMovie: React.FC = () => {
             )}
             <div className="movie-age">
               <Title level={4}>
-                <span className="movie-title">
-                  MÔ TẢ
-                </span>
+                <span className="movie-title">MÔ TẢ</span>
               </Title>
               <Text>
                 <span className="movie-releaseDate">
@@ -127,9 +130,7 @@ const DetailMovie: React.FC = () => {
 
             {/* Nội dung phim */}
             <Title level={4}>
-              <span className="movie-title">
-                NỘI DUNG PHIM
-              </span>
+              <span className="movie-title">NỘI DUNG PHIM</span>
             </Title>
             <Paragraph
               className={`movie-description ${isExpanded ? "expanded" : ""}`}
@@ -168,8 +169,8 @@ const DetailMovie: React.FC = () => {
       ) : (
         <p className="no-movie">Không có phim nào để hiển thị.</p>
       )}
-      <ShowtimeSchedule movieId={parseInt(id!)} />
-      {/* <TotalMovieTicketPrice /> */}
+      <ShowtimeSchedule movieId={parseInt(id!)} onSelectSeat={listSeats} />
+      {selectedSeats.length > 0 ? <TotalMovieTicketPrice /> : null}
     </div>
   );
 };

@@ -47,7 +47,6 @@ const MovieService = {
 
     try {
       const res = await api.get(`${API_ENDPOINTS.GET_BY_ID_MOVIE}/${id}`);
-      console.log("data", res.data);
       return res.data;
     } catch (error) {
       console.error("Failed to fetch movie", error);

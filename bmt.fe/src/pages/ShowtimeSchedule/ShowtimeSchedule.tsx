@@ -18,19 +18,32 @@ interface GroupedShowtimes {
 
 interface ShowtimeScheduleProps {
   movieId: number;
+  onSelectSeat: (selectedSeats: string[]) => void;
 }
 
-const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
+const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({
+  movieId,
+  onSelectSeat,
+}) => {
   const darkMode = useSelector((state: any) => state.theme.darkMode);
   const [showtimes, setShowtimes] = useState<ShowTime[]>([]);
   const [listRoom, setListRoom] = useState<ShowTime[]>([]);
-  const [groupedShowtimes, setGroupedShowtimes] = useState<GroupedShowtimes>({});
+  const [groupedShowtimes, setGroupedShowtimes] = useState<GroupedShowtimes>(
+    {}
+  );
   const [selectedShowtimeDate, setSelectedShowtimeDate] = useState<Date>();
   const [selectedRoomId, setSelectedRoomId] = useState<number | null>(null);
 
+  const listSeats = (listSeat: string[]) => {
+    onSelectSeat(listSeat);
+  };
+
   useEffect(() => {
     if (showtimes.length > 0) {
-      const sortedShowtimes = [...showtimes].sort((a, b) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime());
+      const sortedShowtimes = [...showtimes].sort(
+        (a, b) =>
+          new Date(a.startTime).getTime() - new Date(b.startTime).getTime()
+      );
       setSelectedShowtimeDate(sortedShowtimes[0].startTime);
     }
   }, [showtimes]);
@@ -39,7 +52,7 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
     const fetchShowTime = async () => {
       try {
         const now = new Date();
-        const params : SearchShowTimeModelReq = {
+        const params: SearchShowTimeModelReq = {
           keySearch: "",
           pageSize: 10,
           pageIndex: 1,
@@ -48,7 +61,8 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
           movieId: movieId,
           roomId: undefined,
         };
-        const showtime: ShowTime[] | undefined = await ShowTimeService.SearchShowTime(params);
+        const showtime: ShowTime[] | undefined =
+          await ShowTimeService.SearchShowTime(params);
         setShowtimes(Array.isArray(showtime) ? showtime : []);
       } catch (error) {
         console.log("Load showtimes failed", error);
@@ -61,16 +75,17 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
     const fetchShowTime = async () => {
       try {
         if (!selectedShowtimeDate) return;
-        const params : SearchShowTimeModelReq = {
+        const params: SearchShowTimeModelReq = {
           keySearch: "",
           pageSize: 10,
           pageIndex: 1,
           fromDate: selectedShowtimeDate,
           toDate: selectedShowtimeDate,
-          movieId: movieId, 
+          movieId: movieId,
           roomId: undefined,
         };
-        const showtime: ShowTime[]| undefined = await ShowTimeService.SearchShowTime(params);
+        const showtime: ShowTime[] | undefined =
+          await ShowTimeService.SearchShowTime(params);
         setListRoom(Array.isArray(showtime) ? showtime : []);
       } catch (error) {
         console.log("Load showtimes failed", error);
@@ -78,7 +93,6 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
     };
     fetchShowTime();
   }, [selectedShowtimeDate]);
-
 
   useEffect(() => {
     const grouped = listRoom.reduce<GroupedShowtimes>((acc, showtime) => {
@@ -190,8 +204,9 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({ movieId }) => {
           )}
         </>
       )}
-
-      {selectedRoomId ? <Seat RoomId={selectedRoomId} /> : null}
+      {selectedRoomId ? (
+        <Seat RoomId={selectedRoomId} onSelectSeat={listSeats} />
+      ) : null}
     </div>
   );
 };

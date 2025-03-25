@@ -19,6 +19,10 @@ const API_ENDPOINTS = {
 
     ///////ROOM///////////
     GET_BY_ID_ROOM : `${API_BASE_URL}/Rooms/GetById`,
+
+    //////FOODCOMBO////////
+    READ_ALL_FOODCOMBO: `${API_BASE_URL}/FoodCombos/ReadAll`,
+
 };
 
 export default API_ENDPOINTS;

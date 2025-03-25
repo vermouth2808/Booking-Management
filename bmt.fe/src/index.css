@@ -5,25 +5,24 @@
   --primary: #007AFF;
   --bg: #F5F5F5;
   --card-bg: #FFFFFF;
-  --header:#F5F5F5;
+  --header: #F5F5F5;
   --text-primary: #222;
   --text-secondary: #555;
   --border: #DDDDDD;
   --text-font-family: Verdana, Arial, sans-serif;
   --transition: all 0.3s ease-in-out;
-  --card-box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.273);
+  --card-box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .dark {
   --primary: #0A84FF;
   --bg: #0c1532;
-  --header:#192653;
+  --header: #192653;
   --card-bg: #1E1E1E;
   --text-primary: #EAEAEA;
   --text-secondary: #B0B0B0;
   --border: #333;
-  --card-box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.314);
-
+  --card-box-shadow: 0px 4px 15px rgba(255, 255, 255, 0.2);
 }
 
 /* ======================== */

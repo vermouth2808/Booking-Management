@@ -55,7 +55,7 @@ const Seat: React.FC<SeatProps> = ({ RoomId, onSelectSeat }) => {
   return (
     <div className="seat-wrapper">
       {roomDetail && (
-        <div className="title">
+        <div className="">
           <span>{roomDetail.roomName}</span>
         </div>
       )}

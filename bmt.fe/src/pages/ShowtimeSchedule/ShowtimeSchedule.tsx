@@ -6,6 +6,7 @@ import "./ShowtimeSchedule.css";
 import Seat from "../Seat/Seat";
 import { ShowTime } from "../../models/ShowTimeSearchModelRes";
 import { SearchShowTimeModelReq } from "../../models/SearchShowTimeModelReq";
+import FoodCombo from "../FoodCombo/FoodCombo";
 
 const { Panel } = Collapse;
 
@@ -207,6 +208,8 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({
       {selectedRoomId ? (
         <Seat RoomId={selectedRoomId} onSelectSeat={listSeats} />
       ) : null}
+
+      {selectedRoomId ? <FoodCombo /> : null}
     </div>
   );
 };

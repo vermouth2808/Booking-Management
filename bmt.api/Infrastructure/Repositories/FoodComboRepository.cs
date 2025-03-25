@@ -126,7 +126,7 @@ namespace Core.Infrastructure.Repositories
             await _context.SaveChangesAsync();
 
             await _redisCacheService.RemoveByPatternAsync("FoodCombos_");
-            await _redisCacheService.RemoveByPatternAsync("FoodCombos");
+            await _redisCacheService.RemoveDataAsync("FoodCombos");
             await _redisCacheService.RemoveDataAsync(cacheKey);
             return Result<bool>.Success(true);
         }

@@ -53,7 +53,7 @@
   }
   
   .cinema-title {
-    font-size: 16px;
+    font-size: 16px !important;
     font-weight: bold;
     color: #FFFFFF;
   }

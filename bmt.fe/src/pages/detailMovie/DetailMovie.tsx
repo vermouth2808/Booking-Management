@@ -101,7 +101,7 @@ const DetailMovie: React.FC = () => {
             </div>
             <div className="movie-age">
               <Tag icon={<SmileOutlined />} color="yellow">
-                P: {movie.ageRating}
+               {movie.ageRating}
               </Tag>
             </div>
 
@@ -117,9 +117,9 @@ const DetailMovie: React.FC = () => {
                 Xem Trailer
               </Button>
             )}
-            <div className="movie-age">
+            <div>
               <Title level={4}>
-                <span className="movie-title">MÔ TẢ</span>
+                <span className="movie-title-description">MÔ TẢ</span>
               </Title>
               <Text>
                 <span className="movie-releaseDate">
@@ -130,7 +130,7 @@ const DetailMovie: React.FC = () => {
 
             {/* Nội dung phim */}
             <Title level={4}>
-              <span className="movie-title">NỘI DUNG PHIM</span>
+              <span className="movie-title-description">NỘI DUNG PHIM</span>
             </Title>
             <Paragraph
               className={`movie-description ${isExpanded ? "expanded" : ""}`}

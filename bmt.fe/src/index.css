@@ -153,6 +153,13 @@
   font-family: var(--text-font-family);
 }
 
+.movie-title-description{
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-primary);
+  font-family: var(--text-font-family);
+}
+
 .movie-rank {
   font-size: 12px;
   font-weight: 200;

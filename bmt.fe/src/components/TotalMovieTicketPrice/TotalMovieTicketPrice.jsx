@@ -5,7 +5,7 @@ import "./TotalMovieTicketPrice.css";
 const { Title, Text } = Typography;
 const TotalMovieTicketPrice = () => {
   return (
-    <Card className="TotalMovieTicketPrice">
+    <Card className="total-movie-ticket-price">
       <Row justify="space-between" align="middle">
         {/* Thông tin vé */}
         <Col>

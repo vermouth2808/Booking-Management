@@ -115,7 +115,7 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({
   return (
     <div className={`detail-container ${darkMode ? "dark" : "light"}`}>
       <h2 className="title">
-        <span className="movie-title">LỊCH CHIẾU</span>
+        <span className="movie-title-description">LỊCH CHIẾU</span>
       </h2>
 
       {showtimes.length > 0 ? (
@@ -172,7 +172,7 @@ const ShowtimeSchedule: React.FC<ShowtimeScheduleProps> = ({
       {groupedShowtimes && (
         <>
           <h3 className="subtitle">
-            <span className="movie-title">DANH SÁCH PHÒNG</span>
+            <span className="movie-title-description">DANH SÁCH PHÒNG</span>
           </h3>
 
           {Object.keys(groupedShowtimes).length > 0 ? (

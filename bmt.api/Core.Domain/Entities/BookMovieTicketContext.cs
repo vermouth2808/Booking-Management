@@ -27,6 +27,10 @@ public partial class BookMovieTicketContext : DbContext
 
     public virtual DbSet<Department> Departments { get; set; }
 
+    public virtual DbSet<FoodCombo> FoodCombos { get; set; }
+
+    public virtual DbSet<FoodOrder> FoodOrders { get; set; }
+
     public virtual DbSet<Movie> Movies { get; set; }
 
     public virtual DbSet<Position> Positions { get; set; }
@@ -139,6 +143,49 @@ public partial class BookMovieTicketContext : DbContext
             entity.Property(e => e.Description).HasMaxLength(4000);
             entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
             entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+        });
+
+        modelBuilder.Entity<FoodCombo>(entity =>
+        {
+            entity.HasKey(e => e.ComboId).HasName("PK__FoodComb__DD42580EB81C3B4C");
+
+            entity.ToTable("FoodCombo");
+
+            entity.Property(e => e.ComboId).HasColumnName("ComboID");
+            entity.Property(e => e.Description).HasMaxLength(4000);
+            entity.Property(e => e.ImageUrl)
+                .HasMaxLength(500)
+                .HasColumnName("ImageURL");
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.Property(e => e.Name).HasMaxLength(255);
+            entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
+        });
+
+        modelBuilder.Entity<FoodOrder>(entity =>
+        {
+            entity.HasKey(e => e.FoodOrderId).HasName("PK__FoodOrde__943FF77F0B84801C");
+
+            entity.ToTable("FoodOrder");
+
+            entity.Property(e => e.FoodOrderId).HasColumnName("FoodOrderID");
+            entity.Property(e => e.BookingId).HasColumnName("BookingID");
+            entity.Property(e => e.ComboId).HasColumnName("ComboID");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.CreatedUserId).HasColumnName("CreatedUserID");
+            entity.Property(e => e.IsDeleted).HasDefaultValue(false);
+            entity.Property(e => e.TotalPrice).HasColumnType("decimal(10, 2)");
+            entity.Property(e => e.UpdatedDate).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedUserId).HasColumnName("UpdatedUserID");
+
+            entity.HasOne(d => d.Booking).WithMany(p => p.FoodOrders)
+                .HasForeignKey(d => d.BookingId)
+                .HasConstraintName("FK__FoodOrder__Booki__65370702");
+
+            entity.HasOne(d => d.Combo).WithMany(p => p.FoodOrders)
+                .HasForeignKey(d => d.ComboId)
+                .HasConstraintName("FK__FoodOrder__Combo__662B2B3B");
         });
 
         modelBuilder.Entity<Movie>(entity =>
@@ -258,9 +305,9 @@ public partial class BookMovieTicketContext : DbContext
                 .HasForeignKey(s => s.MovieId);
 
             modelBuilder.Entity<Showtime>()
-                .HasOne(s => s.Room)
-                .WithMany(r => r.Showtimes)
-                .HasForeignKey(s => s.RoomId);
+                  .HasOne(s => s.Room)
+                  .WithMany(r => r.Showtimes)
+                  .HasForeignKey(s => s.RoomId);
         });
 
         modelBuilder.Entity<Staff>(entity =>

@@ -1,0 +1,62 @@
+.total-movie-ticket-price {
+    background-color: rgb(20, 22, 26);
+    color: white;
+    border-radius: 8px;
+    z-index: 1000;
+    position: fixed;
+    height: 120px;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 0 20px;
+}
+
+/* Tiêu đề */
+.movie-title {
+    color: white;
+}
+
+/* Thông tin vé */
+.ticket-type {
+    color: #b0b0b0;
+}
+
+/* Thẻ thời gian giữ vé */
+.ticket-timer {
+    background-color: #fadb14;
+    text-align: center;
+    border-radius: 8px;
+    padding: 8px;
+    width: 80px;
+    height: 50px; /* Giới hạn chiều cao */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.ticket-timer-text {
+    font-size: 12px;
+    font-weight: bold;
+    color: black;
+    white-space: nowrap; /* Không xuống dòng */
+}
+
+/* Tổng giá vé */
+.ticket-price-text {
+    color: #b0b0b0;
+}
+
+.ticket-price {
+    margin: 0;
+    color: white;
+}
+
+/* Nút đặt vé */
+.booking-button {
+    background-color: #a09658 !important;
+    border-color: #a09658 !important;
+}

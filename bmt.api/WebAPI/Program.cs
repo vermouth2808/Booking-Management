@@ -16,6 +16,8 @@ using Core.Shared.DTOs.Response.Banner;
 using Core.Shared.DTOs.Response.Category;
 using Core.Application.Mapper;
 using Core.Shared.DTOs.Response.Room;
+using Core.Shared.DTOs.Response.FoodOrder;
+using Core.Shared.DTOs.Response.FoodCombo;
 
 internal class Program
 {
@@ -86,10 +88,16 @@ internal class Program
 
 
         builder.Services.AddScoped<IMovieService<MovieRes>, MovieService<MovieRes>>();
-        builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>();
+        builder.Services.AddScoped<IMovieRepository<MovieRes>, MovieRepository<MovieRes>>(); 
+        
+        builder.Services.AddScoped<IFoodOrderService<FoodOrderRes>, FoodOrderService<FoodOrderRes>>();
+        builder.Services.AddScoped<IFoodOrderRepository<FoodOrderRes>, FoodOrderRepository<FoodOrderRes>>();
         
         builder.Services.AddScoped<ICategoryService<CategoryRes>, CategoryService<CategoryRes>>();
         builder.Services.AddScoped<ICategoryRepository<CategoryRes>, CategoryRepository<CategoryRes>>();
+
+        builder.Services.AddScoped<IFoodComboService<FoodComboRes>, FoodComboService<FoodComboRes>>();
+        builder.Services.AddScoped<IFoodComboRepository<FoodComboRes>, FoodComboRepository<FoodComboRes>>();
 
         builder.Services.AddScoped<IBannerRepository<BannerRes>, BannerRepository<BannerRes>>();
 

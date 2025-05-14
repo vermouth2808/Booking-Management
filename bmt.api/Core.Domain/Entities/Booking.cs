@@ -32,4 +32,6 @@ public partial class Booking
     public int? UpdatedUserId { get; set; }
 
     public bool IsDeleted { get; set; }
+
+    public virtual ICollection<FoodOrder> FoodOrders { get; set; } = new List<FoodOrder>();
 }

@@ -2,6 +2,8 @@
 using Core.Domain.Entities;
 using Core.Shared.DTOs.Response.Banner;
 using Core.Shared.DTOs.Response.Category;
+using Core.Shared.DTOs.Response.FoodCombo;
+using Core.Shared.DTOs.Response.FoodOrder;
 using Core.Shared.DTOs.Response.Movie;
 using Core.Shared.DTOs.Response.Room;
 using Core.Shared.DTOs.Response.ShowTime;
@@ -19,7 +21,10 @@ namespace Core.Application.Mapper
             CreateMap<Showtime, ShowTimeRes>();
             CreateMap<Showtime, ShowTimeSearchRes>(); 
             CreateMap<Category, CategoryRes>();
-            CreateMap<Room, RoomRes>(); 
+            CreateMap<FoodCombo, FoodComboRes>();
+            CreateMap<Room, RoomRes>();
+            CreateMap<FoodOrder, FoodOrderRes>();
+            CreateMap<FoodOrder, FoodOrderSearchRes>();
         }
     }
 }

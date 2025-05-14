@@ -1,0 +1,111 @@
+.cinema-container {
+    text-align: center;
+    background: var(--bg);
+    color: var(--text-primary);
+    padding: 40px;
+    transition: var(--transition);
+    min-height: 100vh;
+  }
+  
+  .food-combo-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: var(--text-primary);
+  }
+  
+  .cinema-subtitle {
+    font-size: 24px;
+    color: #ffcc00;
+    margin-bottom: 30px;
+  }
+  
+  .combo-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .combo-card {
+    width: 300px;
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    color: var(--text-primary);
+    box-shadow: var(--card-box-shadow);
+    transition: var(--transition);
+  }
+  
+  .combo-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .combo-image {
+    width: 100%;
+    border-radius: 10px;
+  }
+  
+  .combo-name {
+    color: var(--text-primary);
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .combo-description {
+    display: block;
+    margin: 10px 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  
+  .combo-price {
+    font-size: 16px;
+    font-weight: bold;
+    color: #ffcc00;
+    display: block;
+    margin-bottom: 10px;
+  }
+  
+  .quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .quantity-button {
+    background: #ffcc00;
+    color: black;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .quantity-button:hover {
+    background: #e6b800;
+  }
+  
+  .quantity-text {
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  .dark-mode-toggle {
+    margin-bottom: 20px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .dark-mode-toggle:hover {
+    background: #0056b3;
+  }
